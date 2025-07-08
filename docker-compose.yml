@@ -1,0 +1,35 @@
+services:
+  srv-services-registry:
+    container_name: srv-services-registry
+    build:
+      context: ./srv-services-registry/
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - com-fabri-network
+    restart: always
+    volumes:
+      - srv-services-registry-data:/data/services-registry
+
+  srv-appointment:
+    container_name: srv-appointment
+    build:
+      context: ./srv-appointment
+      dockerfile: Dockerfile
+    networks:
+      - com-fabri-network
+    restart: always
+    depends_on:
+      - srv-services-registry
+    volumes:
+      - srv-appointment-data:/data/appointment
+    environment:
+      - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+
+networks:
+  com-fabri-network:
+
+volumes:
+  srv-services-registry-data:
+  srv-appointment-data:
