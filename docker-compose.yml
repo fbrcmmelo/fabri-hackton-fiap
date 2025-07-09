@@ -1,4 +1,41 @@
 services:
+  prometheus:
+    image: prom/prometheus:v2.44.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./srv-api-gateway/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - com-fabri-network
+
+  grafana:
+    image: grafana/grafana:9.5.2
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./srv-api-gateway/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - com-fabri-network
+
+  srv-api-gateway:
+    container_name: srv-api-gateway
+    build:
+      context: ./srv-api-gateway/
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    networks:
+      - com-fabri-network
+    restart: always
+    depends_on:
+      - srv-services-registry
+    environment:
+      - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+      - PORT=8765
+
   srv-services-registry:
     container_name: srv-services-registry
     build:
