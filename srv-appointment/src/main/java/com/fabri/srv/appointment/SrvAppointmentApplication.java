@@ -1,4 +1,4 @@
-package com.fabri.srv.services.registry.srv.appointment;
+package com.fabri.srv.appointment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
