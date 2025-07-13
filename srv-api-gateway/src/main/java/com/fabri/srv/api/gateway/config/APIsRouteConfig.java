@@ -13,6 +13,8 @@ public class APIsRouteConfig {
         return builder.routes()
                 .route("srv-oauth", r -> r.path("/srv-oauth/**")
                         .uri("lb://srv-oauth"))
+                .route("srv-user", r -> r.path("/srv-user/**")
+                        .uri("lb://srv-user"))
                 .route("srv-appointment", r -> r.path("/srv-appointment/**")
                         .uri("lb://srv-appointment"))
                 .build();
