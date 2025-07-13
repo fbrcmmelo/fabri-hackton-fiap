@@ -11,6 +11,8 @@ public class APIsRouteConfig {
     @Bean
     RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
+                .route("srv-oauth", r -> r.path("/srv-oauth/**")
+                        .uri("lb://srv-oauth"))
                 .route("srv-appointment", r -> r.path("/srv-appointment/**")
                         .uri("lb://srv-appointment"))
                 .build();
