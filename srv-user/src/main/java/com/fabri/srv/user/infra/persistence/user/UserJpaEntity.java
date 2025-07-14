@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "tb_user")
 public class UserJpaEntity implements Serializable {
 
     @Id
@@ -22,7 +22,7 @@ public class UserJpaEntity implements Serializable {
 
     @ManyToMany
     @JoinTable(
-            name = "user_roles",
+            name = "tb_user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )

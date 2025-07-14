@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @SuppressWarnings("serial")
-@Table(name = "role")
+@Table(name = "tb_role")
 public class RoleEntity implements Serializable {
 
     @Id

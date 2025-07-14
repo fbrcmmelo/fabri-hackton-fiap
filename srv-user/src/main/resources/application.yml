@@ -7,9 +7,9 @@ spring:
   application:
     name: srv-user
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOSTNAME:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:srv_user}
-    username: ${POSTGRES_USER:srv_user}
-    password: ${POSTGRES_PASSWORD:srv_user}
+    url: jdbc:postgresql://${POSTGRES_HOSTNAME:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
