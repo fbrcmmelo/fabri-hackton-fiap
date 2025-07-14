@@ -2,6 +2,7 @@ package com.fabri.srv.user.infra.api;
 
 import com.fabri.srv.user.infra.adapters.controller.dto.AuthRequest;
 import com.fabri.srv.user.infra.adapters.controller.dto.UserDTO;
+import com.fabri.srv.user.infra.adapters.controller.dto.UserRegisterRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,4 +18,12 @@ public interface UserControllerOpenAPI {
                     @ApiResponse(responseCode = "400", description = "Bad request - invalid input")
             })
     public ResponseEntity<UserDTO> findByUsernameAndPass(AuthRequest request);
+
+    @Operation(summary = "Register a new user", description = "Registers a new user in the system.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "User registered successfully"),
+                    @ApiResponse(responseCode = "400", description = "Bad request - invalid input"),
+                    @ApiResponse(responseCode = "409", description = "Conflict - user already exists")
+            })
+    public ResponseEntity<UserDTO> registerUser(UserRegisterRequest request);
 }

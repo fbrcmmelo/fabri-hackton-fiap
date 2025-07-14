@@ -9,7 +9,7 @@ public record UserOutput(Long id, String email, Set<Role> roles) {
     public static UserOutput fromDomain(User user) {
         return new UserOutput(
                 user.getId(),
-                user.getEmail(),
+                user.getEmail().getValue(),
                 user.getRoles()
         );
     }

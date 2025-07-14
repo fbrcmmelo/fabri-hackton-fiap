@@ -1,0 +1,11 @@
+INSERT INTO tb_role (id, name)
+SELECT 1, 'ADMIN'
+    WHERE NOT EXISTS (SELECT 1 FROM role WHERE name = 'ADMIN');
+
+INSERT INTO tb_role (id, name)
+SELECT 2, 'DOCTOR'
+    WHERE NOT EXISTS (SELECT 1 FROM role WHERE name = 'DOCTOR');
+
+INSERT INTO tb_role (id, name)
+SELECT 3, 'PATIENT'
+    WHERE NOT EXISTS (SELECT 1 FROM role WHERE name = 'PATIENT');
