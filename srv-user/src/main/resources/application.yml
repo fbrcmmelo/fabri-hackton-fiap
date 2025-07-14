@@ -1,0 +1,24 @@
+server:
+  port: ${PORT:0}
+  servlet:
+    context-path: /${spring.application.name}
+
+spring:
+  application:
+    name: srv-user
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOSTNAME:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_HOSTNAME:http://localhost:8761/eureka/}

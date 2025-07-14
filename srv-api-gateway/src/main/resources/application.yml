@@ -1,3 +1,6 @@
+server:
+  port: ${PORT:8765}
+
 spring:
   application:
     name: srv-api-gateway
@@ -6,9 +9,12 @@ spring:
       httpclient:
         connect-timeout: 1000
         response-timeout: 5s
+      discovery:
+        locator:
+          enabled: true
 
-server:
-  port: ${PORT:8765}
+jwt:
+  secret: ${JWT_SECRET}
 
 eureka:
   instance:

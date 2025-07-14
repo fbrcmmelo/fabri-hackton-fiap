@@ -35,6 +35,8 @@ services:
     environment:
       - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
       - PORT=8765
+    volumes:
+      - srv-api-gateway-data:/data/api-gateway
 
   srv-services-registry:
     container_name: srv-services-registry
@@ -48,6 +50,57 @@ services:
     restart: always
     volumes:
       - srv-services-registry-data:/data/services-registry
+
+  srv-oauth:
+    container_name: srv-oauth
+    build:
+      context: ./srv-oauth/
+      dockerfile: Dockerfile
+    networks:
+      - com-fabri-network
+    restart: always
+    depends_on:
+      - srv-services-registry
+    environment:
+      - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+    volumes:
+      - srv-oauth-data:/data/oauth
+
+  srv-user:
+    container_name: srv-user
+    build:
+      context: ./srv-user/
+      dockerfile: Dockerfile
+    networks:
+        - com-fabri-network
+    restart: always
+    depends_on:
+      - srv-services-registry
+      - db-user
+    environment:
+        - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+        - POSTGRES_HOSTNAME=db-user
+        - POSTGRES_PORT=5432
+        - POSTGRES_DB=user_db
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+    volumes:
+        - srv-user-data:/data/user
+
+  db-user:
+    image: postgres:15.4
+    container_name: db-user
+    ports:
+      - "5432:5432"
+    networks:
+      - com-fabri-network
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=user_db
+    volumes:
+      - db-user-data:/var/lib/postgresql/data
 
   srv-appointment:
     container_name: srv-appointment
@@ -68,5 +121,9 @@ networks:
   com-fabri-network:
 
 volumes:
+  srv-api-gateway-data:
   srv-services-registry-data:
+  srv-oauth-data:
+  srv-user-data:
+  db-user-data:
   srv-appointment-data:

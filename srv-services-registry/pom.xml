@@ -14,7 +14,22 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <description>Service Registry</description>
-    <url/>
+
+    <url>https://github.com/fbrcmmelo/fabri-hackton-fiap</url>
+    <developers>
+        <developer>
+            <id>fbrcmmelo</id>
+            <name>Fabri Melo</name>
+            <email>fabricio.marinhomelo@hotmail.com</email>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/license/mit/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
