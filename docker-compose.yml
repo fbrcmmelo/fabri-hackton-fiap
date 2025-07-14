@@ -35,6 +35,7 @@ services:
     environment:
       - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
       - PORT=8765
+      - JWT_SECRET=51zSDSAd5-hgdlpJASh14sZS129dASXZ0z8409w123ZZdas-1.13daA
     volumes:
       - srv-api-gateway-data:/data/api-gateway
 
