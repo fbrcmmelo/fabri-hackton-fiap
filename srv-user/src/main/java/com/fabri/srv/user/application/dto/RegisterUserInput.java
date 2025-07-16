@@ -1,12 +1,10 @@
 package com.fabri.srv.user.application.dto;
 
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
-@Data
 @Getter
-@Builder
+@SuperBuilder
 public class RegisterUserInput {
 
     private String username;
@@ -19,5 +17,4 @@ public class RegisterUserInput {
     private String state;
     private String address;
     private Integer number;
-
 }

@@ -26,4 +26,5 @@ public interface UserControllerOpenAPI {
                     @ApiResponse(responseCode = "409", description = "Conflict - user already exists")
             })
     ResponseEntity<UserDTO> registerUser(UserRegisterRequest request);
+
 }

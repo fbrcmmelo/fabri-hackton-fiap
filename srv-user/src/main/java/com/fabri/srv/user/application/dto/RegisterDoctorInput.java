@@ -1,16 +1,12 @@
 package com.fabri.srv.user.application.dto;
 
-public record RegisterDoctorInput(String username,
-                                  String password,
-                                  String email,
-                                  String firstName,
-                                  String lastName,
-                                  String specialization,
-                                  String licenseNumber,
-                                  String address,
-                                  String city,
-                                  String state,
-                                  Integer number,
-                                  String cpf
-) {
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+
+@Getter
+@SuperBuilder
+public class RegisterDoctorInput extends RegisterUserInput {
+
+    private String crm;
+
 }

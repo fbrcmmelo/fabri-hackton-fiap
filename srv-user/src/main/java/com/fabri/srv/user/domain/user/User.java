@@ -67,4 +67,10 @@ public class User {
 
         return user;
     }
+
+    public String rolesAsString() {
+        return this.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.joining(","));
+    }
 }

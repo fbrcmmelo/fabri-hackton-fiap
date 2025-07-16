@@ -1,0 +1,13 @@
+server:
+  port: ${PORT:0}
+  servlet:
+    context-path: /srv-message-broker
+
+spring:
+  application:
+    name: srv-message-broker
+  rabbitmq:
+    host: ${RABBITMQ_HOSTNAME:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:myuser}
+    password: ${RABBITMQ_PASS:secret}
