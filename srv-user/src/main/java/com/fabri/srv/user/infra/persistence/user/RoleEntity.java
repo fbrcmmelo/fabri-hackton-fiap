@@ -21,7 +21,7 @@ public class RoleEntity implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch =  FetchType.LAZY)
     private Set<UserJpaEntity> users = new HashSet<>();
 
     public RoleEntity(Role role) {

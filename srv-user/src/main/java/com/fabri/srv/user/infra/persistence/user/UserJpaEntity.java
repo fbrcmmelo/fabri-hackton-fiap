@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,7 +21,9 @@ public class UserJpaEntity implements Serializable {
     private Long id;
     private String username;
     private String password;
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
+    @Column(unique = true, nullable = false, length = 14)
     private String cpf;
     private String name;
     private String address;
@@ -29,13 +31,16 @@ public class UserJpaEntity implements Serializable {
     private String city;
     private String state;
 
-    @ManyToMany
+    @Version
+    private Long version;
+
+    @ManyToMany(fetch =  FetchType.EAGER)
     @JoinTable(
             name = "tb_user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<RoleEntity> roles;
+    private List<RoleEntity> roles = new ArrayList<>();
 
     public UserJpaEntity(User user) {
         this.id = user.getId();
@@ -53,6 +58,6 @@ public class UserJpaEntity implements Serializable {
 
         this.roles = user.getRoles().stream()
                 .map(RoleEntity::new)
-                .collect(Collectors.toSet());
+                .toList();
     }
 }

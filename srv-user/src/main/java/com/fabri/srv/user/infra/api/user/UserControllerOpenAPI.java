@@ -1,4 +1,4 @@
-package com.fabri.srv.user.infra.api;
+package com.fabri.srv.user.infra.api.user;
 
 import com.fabri.srv.user.infra.adapters.controller.dto.AuthRequest;
 import com.fabri.srv.user.infra.adapters.controller.dto.UserDTO;
@@ -17,7 +17,7 @@ public interface UserControllerOpenAPI {
                     @ApiResponse(responseCode = "401", description = "Authentication failed"),
                     @ApiResponse(responseCode = "400", description = "Bad request - invalid input")
             })
-    public ResponseEntity<UserDTO> findByUsernameAndPass(AuthRequest request);
+    ResponseEntity<UserDTO> findByUsernameAndPass(AuthRequest request);
 
     @Operation(summary = "Register a new user", description = "Registers a new user in the system.",
             responses = {
@@ -25,5 +25,5 @@ public interface UserControllerOpenAPI {
                     @ApiResponse(responseCode = "400", description = "Bad request - invalid input"),
                     @ApiResponse(responseCode = "409", description = "Conflict - user already exists")
             })
-    public ResponseEntity<UserDTO> registerUser(UserRegisterRequest request);
+    ResponseEntity<UserDTO> registerUser(UserRegisterRequest request);
 }

@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class User {
     private Adress adress;
     private Email email;
     private CPF cpf;
-    private Set<Role> roles = Set.of();
+    private Set<Role> roles = new HashSet<>();
 
     public User(Long id, @NotNull RegisterUserInput input) {
         final var encryptedPassword = BCrypt.hashpw(input.getPassword(), BCrypt.gensalt());
@@ -38,7 +39,7 @@ public class User {
         this.cpf = new CPF(input.getCpf());
         this.email = new Email(input.getEmail());
         this.adress = new Adress(input.getNumber(), input.getAddress(), input.getCity(), input.getState());
-        this.roles = Set.of();
+        this.roles = new HashSet<>();
     }
 
     public User withRoles(@NotNull Set<Role> roles) {
@@ -51,11 +52,19 @@ public class User {
             return null;
         }
 
-        final var user = new User();
+        var user = new User();
         user.setId(entity.getId());
         user.setUsername(entity.getUsername());
         user.setPassword(entity.getPassword());
-        user.setRoles(entity.getRoles().stream().map(Role::fromJpaEntity).collect(Collectors.toSet()));
+        user.setFullName(new FullName(entity.getName()));
+        user.setAdress(new Adress(entity.getNumber(),  entity.getAddress(), entity.getCity(), entity.getState()));
+        user.setEmail(new Email(entity.getEmail()));
+        user.setCpf(new CPF(entity.getCpf()));
+
+
+        user.setRoles(entity.getRoles().stream()
+                .map(Role::fromJpaEntity)
+                .collect(Collectors.toSet()));
 
         return user;
     }

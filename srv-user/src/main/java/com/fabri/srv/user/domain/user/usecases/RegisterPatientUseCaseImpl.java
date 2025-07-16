@@ -25,7 +25,7 @@ public class RegisterPatientUseCaseImpl implements RegisterPatientUseCase {
 
     @Override
     public UserOutput execute(RegisterUserInput input) {
-        final var patientRole = roleGateway.byEnum(RoleEnum.PATIENTE);
+        final var patientRole = roleGateway.byEnum(RoleEnum.PATIENT);
         Objects.requireNonNull(patientRole, "Patient role not found");
 
         final var user = new User(null, input).withRoles(Set.of(patientRole));

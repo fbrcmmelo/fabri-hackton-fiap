@@ -18,6 +18,9 @@ spring:
   sql:
     init:
       mode: always
+  mvc:
+    problemdetails:
+      enabled: true
 
 eureka:
   instance:

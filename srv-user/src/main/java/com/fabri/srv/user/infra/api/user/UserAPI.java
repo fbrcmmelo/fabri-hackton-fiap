@@ -1,4 +1,4 @@
-package com.fabri.srv.user.infra.api;
+package com.fabri.srv.user.infra.api.user;
 
 import com.fabri.srv.user.infra.adapters.controller.UserController;
 import com.fabri.srv.user.infra.adapters.controller.dto.AuthRequest;

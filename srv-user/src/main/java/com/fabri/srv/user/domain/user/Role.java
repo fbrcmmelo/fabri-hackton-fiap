@@ -15,6 +15,7 @@ public class Role implements Serializable {
 
     public static Role fromJpaEntity(RoleEntity roleEntity) {
         Role role = new Role();
+        role.setId(roleEntity.getId());
         role.setName(roleEntity.getName());
 
         return role;
