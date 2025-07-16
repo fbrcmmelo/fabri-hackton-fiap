@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 public class RouteValidator {
 
     protected static final Set<String> OPEN_ENDPOINTS =  Set.of(
-            "/srv-oauth/",
+            "/auth",
             "/users/login",
             "/users/register"
             );

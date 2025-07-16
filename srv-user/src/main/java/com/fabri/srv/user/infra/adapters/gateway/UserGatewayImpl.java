@@ -16,14 +16,6 @@ public class UserGatewayImpl implements UserGateway {
     private final UserJpaRepository jpaRepository;
 
     @Override
-    public User findByUsernameAndPassword(String username, String password) {
-        final var entity = jpaRepository.findByUsernameAndPassword(username, password)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        return User.fromJpaEntity(entity);
-    }
-
-    @Override
     public User save(User user) {
         return User.fromJpaEntity(jpaRepository.save(new UserJpaEntity(user)));
     }

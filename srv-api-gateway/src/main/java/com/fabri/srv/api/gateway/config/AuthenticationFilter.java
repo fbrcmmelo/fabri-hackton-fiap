@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @RefreshScope
 @Component
 @RequiredArgsConstructor
@@ -30,7 +32,9 @@ public class AuthenticationFilter implements GatewayFilter {
 
             final var token = request.getHeaders().getOrEmpty("Authorization").getFirst();
 
-            if (jwtUtils.isTokenExpired(token)) {
+            if (Optional.ofNullable(token).orElse("").isBlank() ||
+                    jwtUtils.isTokenExpired(token)
+            ) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
         }

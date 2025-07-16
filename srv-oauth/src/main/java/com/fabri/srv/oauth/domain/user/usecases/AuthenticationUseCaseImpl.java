@@ -14,7 +14,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class AuthenticationUseCaseImpl implements AuthenticationUseCase {
 
-    private JWTUtils jwtUtils;
+    private final JWTUtils jwtUtils;
 
     @Override
     public AuthOutput execute(UserOutput user) {

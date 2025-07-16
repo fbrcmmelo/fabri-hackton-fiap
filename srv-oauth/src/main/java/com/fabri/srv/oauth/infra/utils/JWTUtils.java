@@ -1,7 +1,7 @@
 package com.fabri.srv.oauth.infra.utils;
 
-import com.fabri.srv.oauth.domain.user.Role;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -12,7 +12,6 @@ import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
 
 @Component
 public class JWTUtils {
@@ -29,7 +28,8 @@ public class JWTUtils {
     }
 
     private Claims getClaimsFromToken(String token) {
-        return Jwts.parser().decryptWith(key).build().parseUnsecuredClaims(token).getPayload();
+        JwtParser build = Jwts.parser().verifyWith(key).build();
+        return (Claims) build.parse(token).getPayload();
     }
 
     public Instant getExpirationDateFromToken(String token) {
@@ -38,17 +38,13 @@ public class JWTUtils {
         return expirationDate.toInstant();
     }
 
-    public boolean isTokenExpired(String token) {
-        return getExpirationDateFromToken(token).isBefore(Instant.now());
-    }
-
-    public String generateToken(String userId, Set<Role> userRoles, JWTType tokenType) {
+    public String generateToken(String userId, String userRoles, JWTType tokenType) {
         long expMilis = JWTType.ACESS_TOKEN.equals(tokenType) ? expiration * 1000 : expiration * 1000 * 5;
 
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + expMilis);
 
-        final var claims = Map.of("id", userId, "role", userRoles);
+        final var claims = Map.of("id", userId, "roles", userRoles);
         return Jwts.builder().claims(claims).issuedAt(now).expiration(expirationDate).signWith(key).compact();
     }
 }

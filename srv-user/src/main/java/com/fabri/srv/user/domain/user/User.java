@@ -61,7 +61,6 @@ public class User {
         user.setEmail(new Email(entity.getEmail()));
         user.setCpf(new CPF(entity.getCpf()));
 
-
         user.setRoles(entity.getRoles().stream()
                 .map(Role::fromJpaEntity)
                 .collect(Collectors.toSet()));
