@@ -5,7 +5,6 @@ import com.fabri.srvmessagebroker.domain.RabbitMqServiceAdapter;
 import com.fabri.srvmessagebroker.infra.consts.FilaConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -15,7 +14,6 @@ public class EmailSenderAdapter implements IEmailGateway {
 
     private final RabbitMqServiceAdapter rabbitMqServiceAdapter;
 
-    @Async
     @Override
     public void sendEmail(String email, String message) {
         log.info("srv-user: Sending message to QUEUE: {}", FilaConstants.USERS_REGISTER);

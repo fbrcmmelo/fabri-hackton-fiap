@@ -25,10 +25,10 @@ public class RegisterPatientUseCaseImpl implements RegisterPatientUseCase {
     public UserOutput execute(RegisterUserInput input) {
         final var patientRole = roleGateway.byEnum(RoleEnum.PATIENT);
         Objects.requireNonNull(patientRole, "Patient role not found");
-        final var user = new User(null, input).withRoles(Set.of(patientRole));
+        var registeredUser = service.registerUser(
+                new User(null, input).withRoles(Set.of(patientRole))
+        );
 
-        service.registerUser(user);
-
-        return UserOutput.fromDomain(user);
+        return UserOutput.fromDomain(registeredUser);
     }
 }

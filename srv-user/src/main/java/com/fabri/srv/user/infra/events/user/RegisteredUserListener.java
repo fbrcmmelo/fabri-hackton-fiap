@@ -27,7 +27,7 @@ public class RegisteredUserListener {
                 
                 We gonna remain using this channel in order to communicate with you now, stay safe and healthy !
                 
-                ConectarSaude Team, regardless.
+                ConectarSaude Team, Regards.
                 
                 """, event.getName());
 

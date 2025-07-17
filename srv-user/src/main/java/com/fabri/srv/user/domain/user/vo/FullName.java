@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class FullName {
-    private final String name;
+    private String name;
 
     public FullName(String firstName, String lastName) {
         if (firstName == null || firstName.isBlank()) {

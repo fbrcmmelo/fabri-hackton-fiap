@@ -48,7 +48,7 @@ public class UserJpaEntity implements Serializable {
         this.password = user.getPassword();
         this.email = user.getEmail().getValue();
         this.cpf = user.getCpf().getCpfCnpjSemFormatacao();
-        this.name = user.getFullName().toString();
+        this.name = user.getFullName().getName();
 
         Adress adress = user.getAdress();
         this.address = adress.getAddress();
