@@ -5,6 +5,7 @@ import com.fabri.srv.user.domain.user.vo.Adress;
 import com.fabri.srv.user.domain.user.vo.CPF;
 import com.fabri.srv.user.domain.user.vo.Email;
 import com.fabri.srv.user.domain.user.vo.FullName;
+import com.fabri.srv.user.infra.exceptions.DomainException;
 import com.fabri.srv.user.infra.persistence.user.UserJpaEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -57,7 +58,7 @@ public class User {
         user.setUsername(entity.getUsername());
         user.setPassword(entity.getPassword());
         user.setFullName(new FullName(entity.getName()));
-        user.setAdress(new Adress(entity.getNumber(),  entity.getAddress(), entity.getCity(), entity.getState()));
+        user.setAdress(new Adress(entity.getNumber(), entity.getAddress(), entity.getCity(), entity.getState()));
         user.setEmail(new Email(entity.getEmail()));
         user.setCpf(new CPF(entity.getCpf()));
 
@@ -72,5 +73,19 @@ public class User {
         return this.getRoles().stream()
                 .map(Role::getName)
                 .collect(Collectors.joining(","));
+    }
+
+    public void checkPassword(String pass) {
+        boolean wrongPassword = !BCrypt.checkpw(pass, this.password);
+        if (wrongPassword) {
+            throw new DomainException("Invalid operation");
+        }
+    }
+
+    public void checkCPF(String cpf) {
+        CPF cpfValid = new CPF(cpf);
+        if (!this.cpf.getCpfCnpj().equalsIgnoreCase(cpfValid.getCpfCnpj())) {
+            throw new DomainException("Invalid CPF");
+        }
     }
 }

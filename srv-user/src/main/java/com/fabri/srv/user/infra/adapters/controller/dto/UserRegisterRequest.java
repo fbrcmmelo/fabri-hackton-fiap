@@ -1,14 +1,18 @@
 package com.fabri.srv.user.infra.adapters.controller.dto;
 
-public record UserRegisterRequest(
-        String username,
-        String password,
-        String email,
-        String address,
-        Integer number,
-        String city,
-        String state,
-        String firstName,
-        String lastName,
-        String cpf) {
+import lombok.Data;
+
+@Data
+public class UserRegisterRequest {
+
+    private String username;
+    private String password;
+    private String email;
+    private String address;
+    private Integer number;
+    private String city;
+    private String state;
+    private String firstName;
+    private String lastName;
+    private String cpf;
 }

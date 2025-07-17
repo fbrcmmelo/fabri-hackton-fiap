@@ -11,10 +11,11 @@ import java.util.Objects;
 @Getter
 public class RegisteredDoctorEvent implements IDomainEvent {
 
-    private Long id;
-    private String crm;
-    private String email;
-    private String cpf;
+    private final Long id;
+    private final String crm;
+    private final String name;
+    private final String email;
+    private final String cpf;
 
     public RegisteredDoctorEvent(Doctor doctor) {
         Objects.requireNonNull(doctor);
@@ -23,6 +24,7 @@ public class RegisteredDoctorEvent implements IDomainEvent {
         this.cpf = doctor.getCpf().getCpfCnpj();
         this.email = doctor.getEmail().getValue();
         this.crm = doctor.getCrm().crm();
+        this.name = doctor.getFullName().getName();
     }
 
     @Override

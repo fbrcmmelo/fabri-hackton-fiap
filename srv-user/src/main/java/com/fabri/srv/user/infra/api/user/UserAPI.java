@@ -1,9 +1,7 @@
 package com.fabri.srv.user.infra.api.user;
 
 import com.fabri.srv.user.infra.adapters.controller.UserController;
-import com.fabri.srv.user.infra.adapters.controller.dto.AuthRequest;
-import com.fabri.srv.user.infra.adapters.controller.dto.UserDTO;
-import com.fabri.srv.user.infra.adapters.controller.dto.UserRegisterRequest;
+import com.fabri.srv.user.infra.adapters.controller.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +28,22 @@ public class UserAPI implements UserControllerOpenAPI {
     @Override
     @PostMapping(value = "/register", consumes = "application/json")
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserRegisterRequest request) {
-        log.info("srv-user: Received request to register user with username {}", request.username());
+        log.info("srv-user: Received request to register user");
         return ResponseEntity.ok(userController.registerPatient(request));
+    }
+
+    @Override
+    @PostMapping(value = "/doctor/register", consumes = "application/json")
+    public ResponseEntity<UserDTO> registerDoctor(DoctorRegisterRequest request) {
+        log.info("srv-user: Received request to register doctor");
+        return ResponseEntity.ok(userController.registerDoctor(request));
+    }
+
+    @Override
+    @PostMapping(value = "/doctor/activate", consumes = "application/json")
+    public ResponseEntity<UserDTO> activateDoctor(ActivateDoctorRequest request) {
+        log.info("srv-user: Received request to activate doctor");
+        return ResponseEntity.ok(userController.activateDoctor(request));
     }
 
 }

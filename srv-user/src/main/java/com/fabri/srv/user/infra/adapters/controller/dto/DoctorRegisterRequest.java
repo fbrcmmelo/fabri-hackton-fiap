@@ -1,16 +1,12 @@
 package com.fabri.srv.user.infra.adapters.controller.dto;
 
-public record DoctorRegisterRequest(
-        String username,
-        String password,
-        String email,
-        String firstName,
-        String lastName,
-        String specialization,
-        String licenseNumber,
-        String address,
-        String city,
-        String state,
-        Integer number,
-        String cpf) {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class DoctorRegisterRequest extends UserRegisterRequest {
+
+    private final String specialization;
+    private final String crm;
 }

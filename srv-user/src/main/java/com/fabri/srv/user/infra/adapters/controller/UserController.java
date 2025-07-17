@@ -1,12 +1,14 @@
 package com.fabri.srv.user.infra.adapters.controller;
 
+import com.fabri.srv.user.application.ActivateDoctorUseCase;
 import com.fabri.srv.user.application.FindUserLoginUseCase;
+import com.fabri.srv.user.application.RegisterDoctorUseCase;
 import com.fabri.srv.user.application.RegisterPatientUseCase;
+import com.fabri.srv.user.application.dto.ActivateDoctorInput;
+import com.fabri.srv.user.application.dto.RegisterDoctorInput;
 import com.fabri.srv.user.application.dto.RegisterUserInput;
 import com.fabri.srv.user.application.dto.UserLoginInput;
-import com.fabri.srv.user.infra.adapters.controller.dto.AuthRequest;
-import com.fabri.srv.user.infra.adapters.controller.dto.UserDTO;
-import com.fabri.srv.user.infra.adapters.controller.dto.UserRegisterRequest;
+import com.fabri.srv.user.infra.adapters.controller.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,29 +18,35 @@ public class UserController {
 
     private final FindUserLoginUseCase findUserUseCase;
     private final RegisterPatientUseCase registerPatientUseCase;
+    private final RegisterDoctorUseCase registerDoctorUseCase;
+    private final ActivateDoctorUseCase activateDoctorUseCase;
 
     public UserDTO findByUsernameAndPass(AuthRequest request) {
-        var userOutput = findUserUseCase.execute(new UserLoginInput(request.username(), request.password()));
-        return UserDTO.from(userOutput);
+        var input = new UserLoginInput(request.username(), request.password());
+        var output = findUserUseCase.execute(input);
+
+        return UserDTO.from(output);
     }
 
     public UserDTO registerPatient(UserRegisterRequest request) {
-        RegisterUserInput registerUserInput = RegisterUserInput.builder()
-                .username(request.username())
-                .password(request.password())
-                .firstName(request.firstName())
-                .lastName(request.lastName())
-                .email(request.email())
-                .cpf(request.cpf())
-                .city(request.city())
-                .state(request.state())
-                .address(request.address())
-                .number(request.number())
-                .build();
+        var input = RegisterUserInput.from(request);
+        var output = registerPatientUseCase.execute(input);
 
-        var userOutput = registerPatientUseCase.execute(registerUserInput);
+        return UserDTO.from(output);
+    }
 
-        return UserDTO.from(userOutput);
+    public UserDTO registerDoctor(DoctorRegisterRequest request) {
+        var input = RegisterDoctorInput.from(request);
+        var output = registerDoctorUseCase.execute(input);
+
+        return UserDTO.from(output);
+    }
+
+    public UserDTO activateDoctor(ActivateDoctorRequest request) {
+        var input = ActivateDoctorInput.fromRequest(request);
+        var output = activateDoctorUseCase.execute(input);
+
+        return UserDTO.from(output);
     }
 
 }

@@ -30,6 +30,8 @@ public class UserJpaEntity implements Serializable {
     private Integer number;
     private String city;
     private String state;
+    private String crm;
+    private String specialization;
 
     @Version
     private Long version;
