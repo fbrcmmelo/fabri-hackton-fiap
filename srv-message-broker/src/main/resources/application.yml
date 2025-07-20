@@ -1,0 +1,20 @@
+server:
+  port: ${PORT:0}
+  servlet:
+    context-path: /srv-message-broker
+
+spring:
+  application:
+    name: srv-message-broker
+  rabbitmq:
+    host: ${RABBITMQ_HOSTNAME:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:myuser}
+    password: ${RABBITMQ_PASS:secret}
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_HOSTNAME:http://localhost:8761/eureka/}

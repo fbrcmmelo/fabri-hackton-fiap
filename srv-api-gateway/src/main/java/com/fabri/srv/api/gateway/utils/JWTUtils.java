@@ -1,6 +1,7 @@
 package com.fabri.srv.api.gateway.utils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -24,7 +25,8 @@ public class JWTUtils {
     }
 
     private Claims getClaimsFromToken(String token) {
-        return Jwts.parser().decryptWith(key).build().parseUnsecuredClaims(token).getPayload();
+        JwtParser build = Jwts.parser().verifyWith(key).build();
+        return (Claims) build.parse(token).getPayload();
     }
 
     private Instant getExpirationDateFromToken(String token) {

@@ -1,5 +1,6 @@
 package com.fabri.srv.user.infra.persistence.user;
 
+import com.fabri.srv.user.domain.user.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,11 @@ public class RoleEntity implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch =  FetchType.LAZY)
     private Set<UserJpaEntity> users = new HashSet<>();
+
+    public RoleEntity(Role role) {
+        this.id = role.getId();
+        this.name = role.getName();
+    }
 }

@@ -1,46 +1,23 @@
 package com.fabri.srv.oauth.domain.user;
 
+import com.fabri.srv.oauth.infra.clients.UserDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User {
 
     private Long id;
     private String name;
-    private String email;
-    private String password;
-    private Set<Role> roles;
+    private String roles = "NONE";
 
-    public User(Long id, String name, String email, String password) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
+    public static User fromDTO(UserDTO body) {
+        User user = new User();
+        user.setId(body.id());
+        user.setName(body.name());
+        user.setRoles(body.roles());
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .toList();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
+        return user;
     }
 }

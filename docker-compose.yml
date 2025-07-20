@@ -19,14 +19,29 @@ services:
       - ./srv-api-gateway/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     networks:
       - com-fabri-network
-
+  
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=secret
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - com-fabri-network
+    volumes:
+      - rabbitmq-data:/data/rabbit-mq
+  
   srv-api-gateway:
     container_name: srv-api-gateway
     build:
       context: ./srv-api-gateway/
       dockerfile: Dockerfile
     ports:
-      - "8765:8765"
+      - "8080:8080"
     networks:
       - com-fabri-network
     restart: always
@@ -78,6 +93,9 @@ services:
       - srv-services-registry
       - db-user
     environment:
+        - RABBITMQ_HOSTNAME=rabbitmq
+        - RABBITMQ_USERNAME=myuser
+        - RABBITMQ_PASS=secret
         - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
         - POSTGRES_HOSTNAME=db-user
         - POSTGRES_PORT=5432
@@ -123,6 +141,7 @@ networks:
 volumes:
   srv-api-gateway-data:
   srv-services-registry-data:
+  rabbitmq-data:
   srv-oauth-data:
   srv-user-data:
   db-user-data:

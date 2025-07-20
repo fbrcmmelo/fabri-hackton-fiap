@@ -2,21 +2,22 @@ package com.fabri.srv.api.gateway.config;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
-import java.util.Arrays;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class RouteValidator {
 
-    protected static final String[] OPEN_ENDPOINTS = {
-            "/srv-oauth/",
-            "/srv-user/login"
-    };
+    protected static final Set<String> OPEN_ENDPOINTS =  Set.of(
+            "/auth",
+            "/users/login",
+            "/users/register"
+            );
 
     RouteValidator() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final Predicate<ServerHttpRequest> isSecured = request -> Arrays.stream(OPEN_ENDPOINTS)
-            .noneMatch(endpoint -> request.getURI().getPath().contains(endpoint));
+    public static final Predicate<ServerHttpRequest> isSecured = request ->
+            OPEN_ENDPOINTS.stream().noneMatch(request.getURI().getPath()::contains);
 
 }

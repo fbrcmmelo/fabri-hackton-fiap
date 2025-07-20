@@ -1,0 +1,29 @@
+server:
+  port: ${PORT:0}
+  servlet:
+    context-path: /${spring.application.name}
+
+spring:
+  application:
+    name: srv-notification
+  rabbitmq:
+    host: ${RABBITMQ_HOSTNAME:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:myuser}
+    password: ${RABBITMQ_PASS:secret}
+  mail:
+    host: ${MAIL_HOSTNAME:localhost}
+    port: ${MAIL_PORT:25}
+    username: ${MAIL_USERNAME:myuser}
+    password: ${MAIL_PASS:secret}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.ssl.trust: ${MAIL_HOSTNAME:localhost}
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_HOSTNAME:http://localhost:8761/eureka/}

@@ -15,6 +15,17 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  sql:
+    init:
+      mode: always
+  mvc:
+    problemdetails:
+      enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOSTNAME:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:myuser}
+    password: ${RABBITMQ_PASS:secret}
 
 eureka:
   instance:
