@@ -1,10 +1,7 @@
 package com.fabri.srv.user.domain.user;
 
 import com.fabri.srv.user.application.dto.RegisterUserInput;
-import com.fabri.srv.user.domain.user.vo.Adress;
-import com.fabri.srv.user.domain.user.vo.CPF;
-import com.fabri.srv.user.domain.user.vo.Email;
-import com.fabri.srv.user.domain.user.vo.FullName;
+import com.fabri.srv.user.domain.user.vo.*;
 import com.fabri.srv.user.infra.exceptions.DomainException;
 import com.fabri.srv.user.infra.persistence.user.UserJpaEntity;
 import jakarta.validation.constraints.NotNull;
@@ -87,5 +84,12 @@ public class User {
         if (!this.cpf.getCpfCnpj().equalsIgnoreCase(cpfValid.getCpfCnpj())) {
             throw new DomainException("Invalid CPF");
         }
+    }
+
+    public void validateIfIAmDoctor() {
+        this.roles.stream()
+                .filter(role -> role.getName().equalsIgnoreCase(RoleEnum.DOCTOR.name()))
+                .findFirst()
+                .orElseThrow(() -> new DomainException("User does not have doctor role"));
     }
 }

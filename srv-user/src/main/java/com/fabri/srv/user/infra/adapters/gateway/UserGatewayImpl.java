@@ -4,6 +4,7 @@ import com.fabri.srv.user.domain.user.User;
 import com.fabri.srv.user.domain.user.gateway.UserGateway;
 import com.fabri.srv.user.infra.persistence.user.UserJpaEntity;
 import com.fabri.srv.user.infra.persistence.user.UserJpaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -28,5 +29,11 @@ public class UserGatewayImpl implements UserGateway {
     @Override
     public Optional<User> findByCpf(String cpf) {
         return jpaRepository.findByCpf(cpf).map(User::fromJpaEntity);
+    }
+
+    @Override
+    public User findByEmail(String to) {
+        final var byEmail = jpaRepository.findByEmail(to).orElseThrow(EntityNotFoundException::new);
+        return User.fromJpaEntity(byEmail);
     }
 }

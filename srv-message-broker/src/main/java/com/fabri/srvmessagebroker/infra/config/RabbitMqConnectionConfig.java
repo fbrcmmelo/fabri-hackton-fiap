@@ -3,11 +3,7 @@ package com.fabri.srvmessagebroker.infra.config;
 import com.fabri.srvmessagebroker.infra.consts.ExchangeConstants;
 import com.fabri.srvmessagebroker.infra.consts.FilaConstants;
 import jakarta.annotation.PostConstruct;
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.Binding.DestinationType;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -27,17 +23,40 @@ public class RabbitMqConnectionConfig {
         return new DirectExchange(exchangeName);
     }
 
-    public Binding binding(Queue queue, DirectExchange exchange) {
-        return new Binding(queue.getName(), DestinationType.QUEUE, exchange.getName(), queue.getName(), null);
+    public FanoutExchange fanoutExchange(String exchangeName) {
+        return new FanoutExchange(exchangeName);
+    }
+
+    public Binding binding(Queue queue, Exchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("").noargs();
     }
 
     @PostConstruct
     public void setUpQueuesAndExchanges() {
+        // Direct exchange for direct messages
         amqpAdmin.declareExchange(exchange(ExchangeConstants.DIRECT));
 
-        // declared queues
-        amqpAdmin.declareQueue(queue(FilaConstants.USERS_REGISTER));
-        amqpAdmin.declareBinding(binding(queue(FilaConstants.USERS_REGISTER), exchange(ExchangeConstants.DIRECT)));
+        // Fanout exchange for scheduled appointment
+        amqpAdmin.declareExchange(fanoutExchange(ExchangeConstants.FAN_OUT));
+
+        // Declare queues
+        amqpAdmin.declareQueue(queue(FilaConstants.EMR_TRIAGE));
+        amqpAdmin.declareQueue(queue(FilaConstants.PATIENT_EMAIL_NOTIFICATION));
+        amqpAdmin.declareQueue(queue(FilaConstants.DOCTOR_EMAIL_NOTIFICATION));
+        amqpAdmin.declareQueue(queue(FilaConstants.PATIENT_FINISHED_TRIAGE));
+
+        // Bind patient and doctor queues to direct exchange for direct messages
+        amqpAdmin.declareBinding(binding(queue(FilaConstants.EMR_TRIAGE), exchange(ExchangeConstants.DIRECT)));
+        amqpAdmin.declareBinding(
+                binding(queue(FilaConstants.PATIENT_EMAIL_NOTIFICATION), exchange(ExchangeConstants.DIRECT)));
+        amqpAdmin.declareBinding(binding(queue(FilaConstants.DOCTOR_EMAIL_NOTIFICATION), exchange(ExchangeConstants.DIRECT)));
+        amqpAdmin.declareBinding(binding(queue(FilaConstants.PATIENT_FINISHED_TRIAGE), exchange(ExchangeConstants.DIRECT)));
+
+        // Bind patient and doctor queues to fanout exchange for scheduled appointments
+        amqpAdmin.declareBinding(
+                binding(queue(FilaConstants.PATIENT_EMAIL_NOTIFICATION), fanoutExchange(ExchangeConstants.FAN_OUT)));
+        amqpAdmin.declareBinding(
+                binding(queue(FilaConstants.DOCTOR_EMAIL_NOTIFICATION), fanoutExchange(ExchangeConstants.FAN_OUT)));
     }
 
 }

@@ -1,6 +1,10 @@
 package com.fabri.srvnotification.infra.adapters.controller;
 
-public record EmailRequest(String email,
-                           String title,
-                           String message) {
+import java.util.List;
+
+public record EmailRequest(
+        String to,
+        List<String> cc,
+        String title,
+        String body) {
 }
