@@ -23,12 +23,12 @@ public class DoctorPrescriptionEntity {
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
-            mappedBy = "prescription")
+            mappedBy = "doctorPrescription")
     private List<MedicationEntity> medications;
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
-            mappedBy = "prescription")
+            mappedBy = "doctorPrescription")
     private List<ExamEntity> exams;
 
     public DoctorPrescriptionEntity(DoctorPrescription doctorPrescription) {

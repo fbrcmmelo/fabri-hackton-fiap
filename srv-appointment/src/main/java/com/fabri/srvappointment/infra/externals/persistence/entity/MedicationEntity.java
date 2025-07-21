@@ -20,8 +20,8 @@ public class MedicationEntity {
     private Long takePerDay;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prescription_id", updatable = false,nullable = false)
-    private DoctorPrescriptionEntity prescription;
+    @JoinColumn(name = "doctor_prescription_id", updatable = false,nullable = false)
+    private DoctorPrescriptionEntity doctorPrescription;
 
     public MedicationEntity(Medication medication) {
         if (medication == null) {

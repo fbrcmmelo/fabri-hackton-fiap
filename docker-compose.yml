@@ -76,13 +76,14 @@ services:
     restart: always
     depends_on:
       - rabbitmq
+      - srv-services-registry
     environment:
       - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
       - RABBITMQ_HOSTNAME=rabbitmq
       - RABBITMQ_USERNAME=myuser
       - RABBITMQ_PASS=secret
     volumes:
-      - message-broker-data:/data/message-broker
+      - srv-message-broker-data:/data/message-broker
 
   srv-notification:
     container_name: srv-notification
@@ -94,6 +95,8 @@ services:
     restart: always
     depends_on:
       - srv-services-registry
+      - rabbitmq
+      - srv-message-broker
     environment:
       - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
       - RABBITMQ_HOSTNAME=rabbitmq
@@ -128,6 +131,8 @@ services:
     depends_on:
       - srv-services-registry
       - db-user
+      - rabbitmq
+      - srv-message-broker
     environment:
         - RABBITMQ_HOSTNAME=rabbitmq
         - RABBITMQ_USERNAME=myuser
@@ -167,6 +172,8 @@ services:
     depends_on:
       - srv-services-registry
       - db-appointment
+      - rabbitmq
+      - srv-message-broker
     volumes:
       - srv-appointment-data:/data/appointment
     environment:
@@ -205,23 +212,28 @@ services:
     restart: always
     depends_on:
       - srv-services-registry
-      - mongodb-srv-phr
+      - db-phr
+      - rabbitmq
+      - srv-message-broker
     environment:
       - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+      - MONGODB_HOSTNAME=db-phr
+      - MONGODB_PORT=27020
       - MONGODB_USERNAME=root
       - MONGODB_PASS=rootpass
       - MONGODB_DATABASE=phr_db
     volumes:
       - srv-phr-data:/data/patient-history-registry
 
-  mongodb-srv-phr:
+  db-phr:
     image: mongo:latest
-    container_name: mongodb-srv-phr
+    container_name: db-phr
     ports:
       - "27020:27017"  # Mapeia a porta 27019 do host para a porta 27017 do container
     volumes:
       - db-patient-history-registry-data:/data/db  # Volume para persistir os dados do banco de dados
     environment:
+      - MONGO_INITDB_DATABASE_NAME=phr_db  # Nome do banco de dados
       - MONGO_INITDB_ROOT_USERNAME=root  # Defina o nome de usuário root
       - MONGO_INITDB_ROOT_PASSWORD=rootpass  # Defina a senha para o usuário root
     networks:
