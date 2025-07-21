@@ -21,7 +21,7 @@ public class FinishedAppointmentListener {
         log.info("Received finished appointment event");
 
         log.info("Sending appointment info to EMR System");
-        rabbitMqServiceAdapter.send(FilaConstants.EMR_APPOINTMENT, event.getAppointment());
+        rabbitMqServiceAdapter.send(FilaConstants.FINISHED_PATIENT_APPOINTMENT, event.getAppointment());
 
         log.info("Sending message to Patient Notification");
         var finishedPatientAppointment = new EmailNotificationFactory().finishedPatientAppointment(event);

@@ -15,7 +15,7 @@ public class AppointmentConsummer {
     private final AppointmentController appointmentController;
     private final JsonUtils jsonUtils;
 
-    @RabbitListener(queues = FilaConstants.PATIENT_FINISHED_TRIAGE)
+    @RabbitListener(queues = FilaConstants.FINISHED_PATIENT_TRIAGE)
     public void handleScheduledAppointmentEvent(final String message) {
         appointmentController.scheduleAppointment(jsonUtils.fromJson(message, ScheduleAppointmentRequest.class));
     }
