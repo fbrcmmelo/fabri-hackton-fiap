@@ -49,7 +49,7 @@ services:
       - srv-services-registry
     environment:
       - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
-      - PORT=8765
+      - PORT=8080
     volumes:
       - srv-api-gateway-data:/data/api-gateway
 
@@ -65,6 +65,42 @@ services:
     restart: always
     volumes:
       - srv-services-registry-data:/data/services-registry
+
+  srv-message-broker:
+    container_name: srv-message-broker
+    build:
+      context: ./srv-message-broker/
+      dockerfile: Dockerfile
+    networks:
+      - com-fabri-network
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+      - RABBITMQ_HOSTNAME=rabbitmq
+      - RABBITMQ_USERNAME=myuser
+      - RABBITMQ_PASS=secret
+    volumes:
+      - message-broker-data:/data/message-broker
+
+  srv-notification:
+    container_name: srv-notification
+    build:
+      context: ./srv-notification/
+      dockerfile: Dockerfile
+    networks:
+      - com-fabri-network
+    restart: always
+    depends_on:
+      - srv-services-registry
+    environment:
+      - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+      - RABBITMQ_HOSTNAME=rabbitmq
+      - RABBITMQ_USERNAME=myuser
+      - RABBITMQ_PASS=secret
+    volumes:
+      - srv-notification-data:/data/notification
 
   srv-oauth:
     container_name: srv-oauth
@@ -130,10 +166,66 @@ services:
     restart: always
     depends_on:
       - srv-services-registry
+      - db-appointment
     volumes:
       - srv-appointment-data:/data/appointment
     environment:
+      - RABBITMQ_HOSTNAME=rabbitmq
+      - RABBITMQ_USERNAME=myuser
+      - RABBITMQ_PASS=secret
       - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+      - POSTGRES_HOSTNAME=db-appointment
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=appointment_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  db-appointment:
+    image: postgres:15.4
+    container_name: db-appointment
+    ports:
+      - "5433:5432"
+    networks:
+      - com-fabri-network
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=appointment_db
+    volumes:
+      - db-appointment-data:/var/lib/postgresql/data
+
+  srv-phr:
+    container_name: srv-phr
+    build:
+      context: ./srv-patient-history-registry/
+      dockerfile: Dockerfile
+    networks:
+      - com-fabri-network
+    restart: always
+    depends_on:
+      - srv-services-registry
+      - mongodb-srv-phr
+    environment:
+      - EUREKA_HOSTNAME=http://srv-services-registry:8761/eureka/
+      - MONGODB_USERNAME=root
+      - MONGODB_PASS=rootpass
+      - MONGODB_DATABASE=phr_db
+    volumes:
+      - srv-phr-data:/data/patient-history-registry
+
+  mongodb-srv-phr:
+    image: mongo:latest
+    container_name: mongodb-srv-phr
+    ports:
+      - "27020:27017"  # Mapeia a porta 27019 do host para a porta 27017 do container
+    volumes:
+      - db-patient-history-registry-data:/data/db  # Volume para persistir os dados do banco de dados
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root  # Defina o nome de usuário root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpass  # Defina a senha para o usuário root
+    networks:
+      - com-fabri-network
 
 networks:
   com-fabri-network:
@@ -142,7 +234,12 @@ volumes:
   srv-api-gateway-data:
   srv-services-registry-data:
   rabbitmq-data:
+  srv-message-broker-data:
+  srv-notification-data:
   srv-oauth-data:
   srv-user-data:
   db-user-data:
+  srv-phr-data:
+  db-patient-history-registry-data:
   srv-appointment-data:
+  db-appointment-data:
