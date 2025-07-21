@@ -19,6 +19,6 @@ public class FinishedTriageListener {
     public void handleScheduledAppointmentEvent(final FinishedPatientTriageEvent event) {
         log.info("Received approved triage event {}", event);
         log.info("Sending to approved triage queue");
-        rabbitMqServiceAdapter.send(FilaConstants.PATIENT_FINISHED_TRIAGE, event);
+        rabbitMqServiceAdapter.send(FilaConstants.FINISHED_PATIENT_TRIAGE, event);
     }
 }

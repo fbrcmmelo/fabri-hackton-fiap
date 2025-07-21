@@ -21,7 +21,7 @@ public class StartedPatientTriageListener {
         log.info("Patient Checked In Event: {}", event);
 
         log.info("Sending patient check in info to EMR System");
-        rabbitMqServiceAdapter.send(FilaConstants.EMR_TRIAGE, event.getPatientTriage());
+        rabbitMqServiceAdapter.send(FilaConstants.STARTED_PATIENT_TRIAGE, event.getPatientTriage());
 
         EmailNotificationFactory emailNotificationFactory = new EmailNotificationFactory();
 

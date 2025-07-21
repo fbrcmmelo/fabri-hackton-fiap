@@ -1,0 +1,28 @@
+server:
+  port: ${PORT:0}
+  servlet:
+    context-path: /srv-patient-history-registry
+
+spring:
+  application:
+    name: srv-patient-history-registry
+  data:
+    mongodb:
+      host: ${MONGODB_HOSTNAME:localhost}
+      port: ${MONGODB_PORT:27020}
+      database: ${MONGODB_DATABASE:}
+      username: ${MONGODB_USERNAME:root}
+      password: ${MONGODB_PASSWORD:rootpass}
+      authentication-database: admin
+  rabbitmq:
+    host: ${RABBITMQ_HOSTNAME:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:myuser}
+    password: ${RABBITMQ_PASS:secret}
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_HOSTNAME:http://localhost:8761/eureka/}
