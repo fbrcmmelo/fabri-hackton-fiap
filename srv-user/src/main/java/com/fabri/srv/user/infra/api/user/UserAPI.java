@@ -33,15 +33,15 @@ public class UserAPI implements UserControllerOpenAPI {
     }
 
     @Override
-    @PostMapping(value = "/doctor/register", consumes = "application/json")
-    public ResponseEntity<UserDTO> registerDoctor(DoctorRegisterRequest request) {
+    @PostMapping(value = "/doctors/register", consumes = "application/json")
+    public ResponseEntity<UserDTO> registerDoctor(@RequestBody DoctorRegisterRequest request) {
         log.info("srv-user: Received request to register doctor");
         return ResponseEntity.ok(userController.registerDoctor(request));
     }
 
     @Override
-    @PostMapping(value = "/doctor/activate", consumes = "application/json")
-    public ResponseEntity<UserDTO> activateDoctor(ActivateDoctorRequest request) {
+    @PostMapping(value = "/doctors/activate", consumes = "application/json")
+    public ResponseEntity<UserDTO> activateDoctor(@RequestBody ActivateDoctorRequest request) {
         log.info("srv-user: Received request to activate doctor");
         return ResponseEntity.ok(userController.activateDoctor(request));
     }

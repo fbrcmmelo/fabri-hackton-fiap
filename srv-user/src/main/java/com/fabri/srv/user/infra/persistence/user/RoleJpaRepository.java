@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface RoleJpaRepository extends JpaRepository<RoleEntity, Long> {
-    Optional<RoleEntity> findByNameContainingIgnoreCase(String name);
+    Optional<RoleEntity> findByName(String name);
 }

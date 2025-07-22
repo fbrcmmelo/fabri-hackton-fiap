@@ -13,12 +13,16 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
+@DiscriminatorValue("USER")
 @Table(name = "tb_user")
 public class UserJpaEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String username;
     private String password;
     @Column(unique = true, nullable = false, length = 100)
@@ -30,8 +34,6 @@ public class UserJpaEntity implements Serializable {
     private Integer number;
     private String city;
     private String state;
-    private String crm;
-    private String specialization;
 
     @Version
     private Long version;
@@ -61,5 +63,6 @@ public class UserJpaEntity implements Serializable {
         this.roles = user.getRoles().stream()
                 .map(RoleEntity::new)
                 .toList();
+        this.version = user.getVersion();
     }
 }

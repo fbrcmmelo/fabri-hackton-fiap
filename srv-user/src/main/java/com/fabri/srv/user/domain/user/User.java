@@ -26,6 +26,8 @@ public class User {
     private Email email;
     private CPF cpf;
     private Set<Role> roles = new HashSet<>();
+    private Long version;
+
 
     public User(Long id, @NotNull RegisterUserInput input) {
         final var encryptedPassword = BCrypt.hashpw(input.getPassword(), BCrypt.gensalt());
@@ -58,6 +60,7 @@ public class User {
         user.setAdress(new Adress(entity.getNumber(), entity.getAddress(), entity.getCity(), entity.getState()));
         user.setEmail(new Email(entity.getEmail()));
         user.setCpf(new CPF(entity.getCpf()));
+        user.setVersion(entity.getVersion());
 
         user.setRoles(entity.getRoles().stream()
                 .map(Role::fromJpaEntity)
@@ -88,8 +91,17 @@ public class User {
 
     public void validateIfIAmDoctor() {
         this.roles.stream()
-                .filter(role -> role.getName().equalsIgnoreCase(RoleEnum.DOCTOR.name()))
+                .filter(role -> Set.of(RoleEnum.DOCTOR.name(), RoleEnum.DOCTOR_PENDING.name())
+                        .contains(role.getName()))
                 .findFirst()
                 .orElseThrow(() -> new DomainException("User does not have doctor role"));
+    }
+
+    public void checkRoleToActiveDoctor() {
+        this.roles.stream()
+                .map(Role::getName)
+                .filter(roleName -> RoleEnum.ADMIN.name().equals(roleName))
+                .findFirst()
+                .orElseThrow(() -> new DomainException("User does not have permission to activate doctor"));
     }
 }

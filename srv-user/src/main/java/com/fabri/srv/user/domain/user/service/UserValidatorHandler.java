@@ -16,7 +16,8 @@ public class UserValidatorHandler {
     private final UserGateway userGateway;
     private final List<IUserValidation> userValidations = List.of(
             new UserCPFValidator(),
-            new UsernameValidator()
+            new UsernameValidator(),
+            new UserEmailValidator()
     );
 
     public void validateUserToRegister(User user) {

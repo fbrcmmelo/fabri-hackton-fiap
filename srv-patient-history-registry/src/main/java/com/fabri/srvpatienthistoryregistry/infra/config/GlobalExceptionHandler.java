@@ -1,8 +1,7 @@
-package com.fabri.srvappointment.infra.config;
+package com.fabri.srvpatienthistoryregistry.infra.config;
 
-import com.fabri.srvappointment.infra.exception.DomainException;
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
+import com.fabri.srvpatienthistoryregistry.domain.DomainException;
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +13,6 @@ import java.time.Instant;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
     /**
      * Creates a ProblemDetail object with the given status and exception.
      *
@@ -41,16 +39,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DomainException.class)
     public ProblemDetail handleDomainException(DomainException ex) {
-        ProblemDetail problemDetail = getProblemDetail(HttpStatus.BAD_REQUEST, ex);
+        ProblemDetail problemDetail = getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
         problemDetail.setProperty("error", "Domain error occurred: " + ex.getMessage());
 
         return problemDetail;
     }
 
-    @ExceptionHandler({SQLException.class, JDBCException.class, HibernateException.class})
+    @ExceptionHandler({SQLException.class})
     public ProblemDetail handleJDBCException(SQLException ex) {
         ProblemDetail problemDetail = getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
         problemDetail.setProperty("error", "Database error occurred");
         return problemDetail;
     }
+
+    @ExceptionHandler(FeignException.class)
+    public ProblemDetail handleFeignException(FeignException ex) {
+        ProblemDetail problemDetail = getProblemDetail(HttpStatus.BAD_GATEWAY, ex);
+        problemDetail.setProperty("error", "External service error: " + ex.getMessage());
+        return problemDetail;
+    }
+
 }

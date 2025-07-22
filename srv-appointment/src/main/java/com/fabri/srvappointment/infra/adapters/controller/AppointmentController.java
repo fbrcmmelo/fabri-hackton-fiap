@@ -24,7 +24,7 @@ public class AppointmentController {
             var in = ScheduleAppointmentInput.from(request);
             schedulePatientAppointmentUseCase.execute(in);
         } catch (Exception e) {
-            log.error("srv-appointment: Fail to schedule appointment : ", e.getMessage());
+            log.error("srv-appointment: Fail to schedule appointment : {} ", e.getMessage());
         }
     }
 

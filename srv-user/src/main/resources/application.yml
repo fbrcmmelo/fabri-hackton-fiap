@@ -15,9 +15,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-  sql:
-    init:
-      mode: always
   mvc:
     problemdetails:
       enabled: true
@@ -26,9 +23,11 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:myuser}
     password: ${RABBITMQ_PASS:secret}
-
+admin:
+  password: ${ADMIN_PASSWORD}
 eureka:
   instance:
+    hostname: ${EUREKA_HOSTNAME:localhost}
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     service-url:

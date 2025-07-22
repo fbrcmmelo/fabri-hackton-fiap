@@ -5,7 +5,6 @@ import com.fabri.srv.oauth.application.dto.UserInput;
 import com.fabri.srv.oauth.application.dto.UserOutput;
 import com.fabri.srv.oauth.domain.user.gateway.UserGateway;
 import lombok.RequiredArgsConstructor;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +15,6 @@ public class FindUserUseCaseImpl implements FindUserUseCase {
 
     @Override
     public UserOutput execute(UserInput input) {
-        final var encryptedPassword = BCrypt.hashpw(input.password(), BCrypt.gensalt());
-        return UserOutput.fromDomain(userGateway.findUser(input.username(), encryptedPassword));
+        return UserOutput.fromDomain(userGateway.findUser(input.username(), input.password()));
     }
 }
