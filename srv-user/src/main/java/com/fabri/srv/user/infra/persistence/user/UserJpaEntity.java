@@ -22,6 +22,7 @@ public class UserJpaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String username;
     private String password;
     @Column(unique = true, nullable = false, length = 100)

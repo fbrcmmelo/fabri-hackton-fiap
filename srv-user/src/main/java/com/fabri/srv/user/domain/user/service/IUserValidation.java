@@ -6,5 +6,5 @@ import com.fabri.srv.user.infra.exceptions.UserValidationException;
 
 public interface IUserValidation {
 
-    void validate(User cpf, UserGateway userGateway) throws UserValidationException;
+    void validate(User user, UserGateway userGateway) throws UserValidationException;
 }

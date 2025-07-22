@@ -10,8 +10,9 @@ public class RouteValidator {
     protected static final Set<String> OPEN_ENDPOINTS =  Set.of(
             "/auth",
             "/users/login",
-            "/users/register"
-            );
+            "/users/register",
+            "/users/doctors/register"
+    );
 
     RouteValidator() {
         throw new IllegalStateException("Utility class");

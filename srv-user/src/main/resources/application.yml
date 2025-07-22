@@ -15,9 +15,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-  sql:
-    init:
-      mode: always
   mvc:
     problemdetails:
       enabled: true

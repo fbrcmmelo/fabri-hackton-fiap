@@ -1,6 +1,7 @@
 package com.fabri.srv.user.domain.user.service;
 
 import com.fabri.srv.user.domain.IDomainEventPubGateway;
+import com.fabri.srv.user.domain.user.Role;
 import com.fabri.srv.user.domain.user.User;
 import com.fabri.srv.user.domain.user.events.RegisteredUserEvent;
 import com.fabri.srv.user.domain.user.gateway.RoleGateway;
@@ -22,9 +23,10 @@ public class UserDomainService {
     private final UserValidatorHandler userValidatorHandler;
     private final IDomainEventPubGateway domainEventPubGateway;
 
-    public User registerUser(User user, RoleEnum role) {
+    public User registerUser(User user, RoleEnum roleEnum) {
         userValidatorHandler.validateUserToRegister(user);
-        User registeredUser = userGateway.save(user.withRoles(Set.of(roleGateway.byEnum(role))));
+        Role role = roleGateway.byEnum(roleEnum);
+        User registeredUser = userGateway.save(user.withRoles(Set.of(role)));
         domainEventPubGateway.publish(new RegisteredUserEvent(registeredUser));
 
         return registeredUser;

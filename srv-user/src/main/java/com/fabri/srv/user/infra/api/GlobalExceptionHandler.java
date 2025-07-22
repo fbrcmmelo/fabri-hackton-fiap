@@ -2,6 +2,7 @@ package com.fabri.srv.user.infra.api;
 
 import com.fabri.srv.user.infra.exceptions.DomainException;
 import com.fabri.srv.user.infra.exceptions.UserValidationException;
+import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
@@ -35,14 +36,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception ex) {
-        return getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        ProblemDetail problemDetail = getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        problemDetail.setProperty("error", "An unexpected error occurred");
+
+        return problemDetail;
     }
 
     @ExceptionHandler(DomainException.class)
     public ProblemDetail handleDomainException(DomainException ex) {
-       return getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
-    }
+        ProblemDetail problemDetail = getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        problemDetail.setProperty("error", "Domain error occurred: " + ex.getMessage());
 
+        return problemDetail;
+    }
 
     @ExceptionHandler({SQLException.class, JDBCException.class, HibernateException.class})
     public ProblemDetail handleJDBCException(SQLException ex) {
@@ -61,6 +67,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ProblemDetail handleEntityNotFoundException(EntityNotFoundException ex) {
         return getProblemDetail(HttpStatus.NOT_FOUND, ex);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ProblemDetail handleFeignException(FeignException ex) {
+        ProblemDetail problemDetail = getProblemDetail(HttpStatus.BAD_GATEWAY, ex);
+        problemDetail.setProperty("error", "External service error: " + ex.getMessage());
+        return problemDetail;
     }
 
 }

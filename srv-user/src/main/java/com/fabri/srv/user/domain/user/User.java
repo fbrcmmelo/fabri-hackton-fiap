@@ -88,7 +88,8 @@ public class User {
 
     public void validateIfIAmDoctor() {
         this.roles.stream()
-                .filter(role -> role.getName().equalsIgnoreCase(RoleEnum.DOCTOR.name()))
+                .filter(role -> Set.of(RoleEnum.DOCTOR.name(), RoleEnum.DOCTOR_PENDING.name())
+                        .contains(role.getName()))
                 .findFirst()
                 .orElseThrow(() -> new DomainException("User does not have doctor role"));
     }

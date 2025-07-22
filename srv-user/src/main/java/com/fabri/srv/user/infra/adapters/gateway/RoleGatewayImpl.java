@@ -16,7 +16,7 @@ public class RoleGatewayImpl implements RoleGateway {
 
     @Override
     public Role byEnum(RoleEnum roleEnum) {
-        return jpaRepository.findByNameContainingIgnoreCase(roleEnum.name())
+        return jpaRepository.findByName(roleEnum.name())
                 .map(Role::fromJpaEntity)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found: " + roleEnum));
     }
