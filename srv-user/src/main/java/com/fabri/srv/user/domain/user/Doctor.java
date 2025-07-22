@@ -1,10 +1,7 @@
 package com.fabri.srv.user.domain.user;
 
 import com.fabri.srv.user.application.dto.RegisterDoctorInput;
-import com.fabri.srv.user.domain.user.vo.Adress;
-import com.fabri.srv.user.domain.user.vo.DoctorCRM;
-import com.fabri.srv.user.domain.user.vo.Email;
-import com.fabri.srv.user.domain.user.vo.FullName;
+import com.fabri.srv.user.domain.user.vo.*;
 import com.fabri.srv.user.infra.persistence.user.DoctorJpaEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,11 +34,15 @@ public class Doctor extends User {
         Doctor doctor = new Doctor();
         doctor.setId(entity.getId());
         doctor.setUsername(entity.getUsername());
+        doctor.setPassword(entity.getPassword());
         doctor.setFullName(new FullName(entity.getName()));
         doctor.setEmail(new Email(entity.getEmail()));
+        doctor.setCpf(new CPF(entity.getCpf()));
         doctor.setCrm(new DoctorCRM(entity.getCrm(), entity.getSpecialization()));
         doctor.setAdress(new Adress(entity.getNumber(), entity.getAddress(), entity.getCity(), entity.getState()));
         doctor.setRoles(entity.getRoles().stream().map(Role::fromJpaEntity).collect(Collectors.toSet()));
+        doctor.setVersion(entity.getVersion());
+
         return doctor;
     }
 

@@ -63,5 +63,6 @@ public class UserJpaEntity implements Serializable {
         this.roles = user.getRoles().stream()
                 .map(RoleEntity::new)
                 .toList();
+        this.version = user.getVersion();
     }
 }

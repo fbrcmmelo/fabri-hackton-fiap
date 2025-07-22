@@ -23,7 +23,8 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:myuser}
     password: ${RABBITMQ_PASS:secret}
-
+admin:
+  password: ${ADMIN_PASSWORD}
 eureka:
   instance:
     hostname: ${EUREKA_HOSTNAME:localhost}

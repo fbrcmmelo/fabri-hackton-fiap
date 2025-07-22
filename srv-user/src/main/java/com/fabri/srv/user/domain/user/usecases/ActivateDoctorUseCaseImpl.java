@@ -22,17 +22,15 @@ public class ActivateDoctorUseCaseImpl implements ActivateDoctorUseCase {
 
     @Override
     public UserOutput execute(ActivateDoctorInput input) {
-        try {
-            User activator =
-                    userGateway.findByUsername(input.activatorUsername()).orElseThrow(DoctorActivationException::new);
-            activator.checkPassword(input.activatorPassword());
-            Doctor doctor = doctorDomainService.findByCRM(input.crm());
-            doctor.checkCPF(input.doctorCpf());
+        User activator = userGateway
+                .findByUsername(input.activatorUsername())
+                .orElseThrow(DoctorActivationException::new);
+        activator.checkRoleToActiveDoctor();
+        activator.checkPassword(input.activatorPassword());
 
-            return UserOutput.fromDomain(doctorDomainService.activate(doctor, activator.getId()));
-        } catch (Exception e) {
-            log.warn("Error activating doctor {}", e.getMessage());
-            throw new DoctorActivationException();
-        }
+        Doctor doctor = doctorDomainService.findByCRM(input.crm());
+        doctor.checkCPF(input.doctorCpf());
+
+        return UserOutput.fromDomain(doctorDomainService.activate(doctor, activator.getId()));
     }
 }
