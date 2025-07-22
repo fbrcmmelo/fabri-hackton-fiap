@@ -26,6 +26,9 @@ public class APIsRouteConfig {
                 .route("srv-appointment", r -> r.path("/srv-appointment/**")
                         .filters(f -> f.filter(authenticationFilter))
                         .uri("lb://srv-appointment"))
+                .route("srv-patient-history-registry", r -> r.path("/srv-patient-history-registry/**")
+                        .filters(f -> f.filter(authenticationFilter))
+                        .uri("lb://srv-patient-history-registry"))
                 .build();
     }
 }

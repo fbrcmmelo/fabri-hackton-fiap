@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS tb_role (
 );
 
 CREATE TABLE IF NOT EXISTS tb_user (
-    dtype VARCHAR(50),
+    dtype VARCHAR(50) DEFAULT 'USER',
     id INT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -45,17 +45,17 @@ SELECT 4,'DOCTOR_PENDING'
 WHERE NOT EXISTS (SELECT 1 FROM tb_role WHERE name = 'DOCTOR_PENDING');
 
 INSERT INTO tb_user (dtype,id, email, password, username, address, city, cpf, name, number, state, version)
-SELECT '',
+SELECT 'USER',
     1,
     'fabri@hackton.com',
        '$2a$10$eW8b1z5Z3f7Q9j1k1l1m1uO8d5h6s7f8g9h0i1j2k3l4m5n6o7p8q',
        'admin',
-       '',
-       '',
-         '',
+       'Rua',
+       'city',
+         '123.456.789-00',
          'Admin User',
-         0,
-            '',
+         0000,
+            'state',
          0
 WHERE NOT EXISTS (SELECT 1 FROM tb_user WHERE email = 'fabri@hackton.com' AND username = 'admin');
 

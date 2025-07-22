@@ -23,7 +23,8 @@ public class UserGatewayImpl implements UserGateway {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return jpaRepository.findByUsername(username).map(User::fromJpaEntity);
+        var byUsername = jpaRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        return Optional.ofNullable(User.fromJpaEntity(byUsername));
     }
 
     @Override

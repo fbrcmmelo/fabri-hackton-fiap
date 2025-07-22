@@ -13,6 +13,9 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
+@DiscriminatorValue("USER")
 @Table(name = "tb_user")
 public class UserJpaEntity implements Serializable {
 
@@ -30,8 +33,6 @@ public class UserJpaEntity implements Serializable {
     private Integer number;
     private String city;
     private String state;
-    private String crm;
-    private String specialization;
 
     @Version
     private Long version;

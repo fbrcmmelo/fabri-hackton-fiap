@@ -1,7 +1,10 @@
 package com.fabri.srv.user.infra.api;
 
+import com.fabri.srv.user.infra.exceptions.DomainException;
 import com.fabri.srv.user.infra.exceptions.UserValidationException;
 import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
+import java.sql.SQLException;
 import java.time.Instant;
 
 @RestControllerAdvice
@@ -32,6 +36,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception ex) {
         return getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+    }
+
+    @ExceptionHandler(DomainException.class)
+    public ProblemDetail handleDomainException(DomainException ex) {
+       return getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+    }
+
+
+    @ExceptionHandler({SQLException.class, JDBCException.class, HibernateException.class})
+    public ProblemDetail handleJDBCException(SQLException ex) {
+        ProblemDetail problemDetail = getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        problemDetail.setProperty("error", "Database error occurred");
+        return problemDetail;
     }
 
     @ExceptionHandler(UserValidationException.class)
