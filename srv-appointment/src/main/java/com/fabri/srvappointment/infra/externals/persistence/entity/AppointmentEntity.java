@@ -31,8 +31,8 @@ public class AppointmentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private DoctorPrescriptionEntity doctorPrescription;
 
-    @JoinColumn(name = "patient_triage_id", nullable = false)
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "triage_id", nullable = false)
     private TriageEntity triage;
 
     @Version

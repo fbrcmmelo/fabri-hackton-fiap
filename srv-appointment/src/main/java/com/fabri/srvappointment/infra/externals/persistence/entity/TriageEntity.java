@@ -42,10 +42,6 @@ public class TriageEntity {
     @Enumerated(EnumType.STRING)
     private TriageStatus triageStatus;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment_id", nullable = false)
-    private AppointmentEntity appointment;
-
     @Version
     private Integer version;
 

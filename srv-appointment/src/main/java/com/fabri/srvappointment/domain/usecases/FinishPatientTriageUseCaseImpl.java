@@ -20,11 +20,10 @@ public class FinishPatientTriageUseCaseImpl implements FinishPatientTriageUseCas
     @Override
     public PatientTriageOutput execute(FinishTriageInput input) {
         final var triagePeddingApproval = triageGateway.getById(input.getTriageId());
-        final var doctorOutput = userGateway.getDoctor(String.valueOf(input.getDoctorId()));
+        final var doctorOutput = userGateway.getUser(String.valueOf(input.getDoctorId()));
 
-        triagePeddingApproval.updateStatus(doctorOutput.getDoctorId(), input.getTriageStatus());
+        triagePeddingApproval.updateStatus(doctorOutput.getId(), input.getTriageStatus());
         final var triageUpdated = triageGateway.save(triagePeddingApproval);
-
         domainEventPublisher.publish(triageUpdated.getEvent());
 
         return PatientTriageOutput.from(triageUpdated);

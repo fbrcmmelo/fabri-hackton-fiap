@@ -23,7 +23,7 @@ public class FinishAppointmentUseCaseImpl implements FinishAppointmentUseCase {
     @Override
     public FinishAppointmentOutput execute(FinishAppointmentInput input) {
         final var triage = triageGateway.getById(input.getTriageId());
-        final var doctor = userGateway.getDoctor(String.valueOf(triage.getDoctor().getDoctorId()));
+        final var doctor = userGateway.getUser(String.valueOf(triage.getDoctor().getDoctorId()));
         if (doctor == null) {
             throw new IllegalArgumentException("Doctor not found for the given check-in.");
         }

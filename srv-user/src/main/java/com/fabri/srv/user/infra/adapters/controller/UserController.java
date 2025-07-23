@@ -1,14 +1,9 @@
 package com.fabri.srv.user.infra.adapters.controller;
 
-import com.fabri.srv.user.application.ActivateDoctorUseCase;
-import com.fabri.srv.user.application.FindUserLoginUseCase;
-import com.fabri.srv.user.application.RegisterDoctorUseCase;
-import com.fabri.srv.user.application.RegisterPatientUseCase;
-import com.fabri.srv.user.application.dto.ActivateDoctorInput;
-import com.fabri.srv.user.application.dto.RegisterDoctorInput;
-import com.fabri.srv.user.application.dto.RegisterUserInput;
-import com.fabri.srv.user.application.dto.UserLoginInput;
+import com.fabri.srv.user.application.*;
+import com.fabri.srv.user.application.dto.*;
 import com.fabri.srv.user.infra.adapters.controller.dto.*;
+import com.fabri.srv.user.infra.api.user.SaveNextDoctorAppointmentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +15,8 @@ public class UserController {
     private final RegisterPatientUseCase registerPatientUseCase;
     private final RegisterDoctorUseCase registerDoctorUseCase;
     private final ActivateDoctorUseCase activateDoctorUseCase;
+    private final FindUserByIdUseCase findUserByIdUseCase;
+    private final SaveNextDoctorAppointmentUseCase saveNextDoctorAppointmentUseCase;
 
     public UserDTO findByUsernameAndPass(AuthRequest request) {
         var input = new UserLoginInput(request.username(), request.password());
@@ -49,4 +46,13 @@ public class UserController {
         return UserDTO.from(output);
     }
 
+    public UserDTO getUserById(String userId) {
+        var output = findUserByIdUseCase.execute(userId);
+        return UserDTO.from(output);
+    }
+
+    public void saveNextDoctorAppointment(Long doctorId, SaveNextDoctorAppointmentRequest request) {
+        var input = new SaveNextAppointmentInput(doctorId, request.getTriageId(), request.getNextAvailableAppointment());
+        saveNextDoctorAppointmentUseCase.execute(input);
+    }
 }

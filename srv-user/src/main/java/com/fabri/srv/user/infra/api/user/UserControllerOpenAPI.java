@@ -40,4 +40,19 @@ public interface UserControllerOpenAPI {
                     @ApiResponse(responseCode = "404", description = "Not found - doctor or activator not found")
             })
     ResponseEntity<UserDTO> activateDoctor(ActivateDoctorRequest request);
+
+    @Operation(summary = "Get user by ID", description = "Retrieves a user by their ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User found"),
+                    @ApiResponse(responseCode = "404", description = "Not found - user does not exist")
+            })
+    ResponseEntity<UserDTO> getUserById(String userId);
+
+    @Operation(summary = "Save next doctor appointment", description = "Saves the next appointment for a doctor.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Next appointment saved successfully"),
+                    @ApiResponse(responseCode = "400", description = "Bad request - invalid input"),
+                    @ApiResponse(responseCode = "404", description = "Not found - doctor does not exist")
+            })
+    ResponseEntity<Void> saveNextDoctorAppointment(Long doctorId, SaveNextDoctorAppointmentRequest request);
 }

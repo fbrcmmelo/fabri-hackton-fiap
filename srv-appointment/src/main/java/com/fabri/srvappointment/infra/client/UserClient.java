@@ -1,19 +1,22 @@
 package com.fabri.srvappointment.infra.client;
 
-import com.fabri.srvappointment.domain.vo.DoctorOutput;
+import com.fabri.srvappointment.infra.adapters.controller.dto.SaveNextAppointment;
 import com.fabri.srvappointment.infra.client.user.UserOutput;
+import com.fabri.srvappointment.infra.config.FeignAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Component
-@FeignClient(name = "srv-api-gateway", path = "/api/v1/users")
+@FeignClient(name = "srv-api-gateway", path = "/srv-user/api/v1/users", configuration = FeignAuthConfig.class)
 public interface UserClient {
 
-    @GetMapping("/{id}")
-    UserOutput findById(@PathVariable String id);
+    @GetMapping("/{userId}")
+    UserOutput findById(@PathVariable String userId);
 
-    @GetMapping("/doctors/{id}")
-    DoctorOutput getDoctor(@PathVariable String id);
+    @PutMapping("/doctors/{doctorId}/next-appointment")
+    void saveNextDoctorAppointment(@PathVariable Long doctorId, @RequestBody SaveNextAppointment doctor);
 }

@@ -4,6 +4,7 @@ import com.fabri.srv.user.infra.exceptions.DomainException;
 import com.fabri.srv.user.infra.exceptions.UserValidationException;
 import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.sql.SQLException;
 import java.time.Instant;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     /**
@@ -26,6 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return a ProblemDetail object with the specified status and exception details
      */
     private static ProblemDetail getProblemDetail(HttpStatus status, Exception ex) {
+        log.error(ex.getMessage(), ex);
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, status.getReasonPhrase());
         problemDetail.setTitle(status.name());
         problemDetail.setProperty("error", ex.getMessage());

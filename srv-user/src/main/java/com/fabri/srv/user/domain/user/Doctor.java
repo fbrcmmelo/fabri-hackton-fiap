@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class Doctor extends User {
 
     private DoctorCRM crm;
+    private Instant nextAppointment;
 
     public Doctor(Long id, RegisterDoctorInput input, DoctorCRM crm) {
         super(id, input);
@@ -50,5 +52,9 @@ public class Doctor extends User {
     public Doctor withRoles(Set<Role> roles) {
         super.withRoles(roles);
         return this;
+    }
+
+    public void setNextAppointment(Instant appointmentDate) {
+        this.nextAppointment = appointmentDate;
     }
 }

@@ -9,9 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -25,9 +24,9 @@ public class User {
     private Adress adress;
     private Email email;
     private CPF cpf;
-    private Set<Role> roles = new HashSet<>();
     private Long version;
-
+    private Set<Role> roles = new HashSet<>();
+    private List<DoctorAppointment> doctorAppointments = new ArrayList<>();
 
     public User(Long id, @NotNull RegisterUserInput input) {
         final var encryptedPassword = BCrypt.hashpw(input.getPassword(), BCrypt.gensalt());
@@ -103,5 +102,11 @@ public class User {
                 .filter(roleName -> RoleEnum.ADMIN.name().equals(roleName))
                 .findFirst()
                 .orElseThrow(() -> new DomainException("User does not have permission to activate doctor"));
+    }
+
+    public Instant getNextAppointmentTime() {
+        return this.doctorAppointments
+                .stream().max(Comparator.comparing(DoctorAppointment::getAppointmentTime))
+                .orElse(new DoctorAppointment()).getAppointmentTime();
     }
 }

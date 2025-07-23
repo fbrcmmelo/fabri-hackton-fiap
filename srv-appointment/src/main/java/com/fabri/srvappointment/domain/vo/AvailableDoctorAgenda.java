@@ -9,5 +9,5 @@ import java.time.Instant;
 @AllArgsConstructor
 public class AvailableDoctorAgenda {
 
-    private Instant date;
+    private Instant appointmentTime;
 }

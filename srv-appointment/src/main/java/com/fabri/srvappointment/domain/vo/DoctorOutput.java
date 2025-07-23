@@ -3,7 +3,7 @@ package com.fabri.srvappointment.domain.vo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
+import java.time.Instant;
 
 @Getter
 @AllArgsConstructor
@@ -14,5 +14,6 @@ public class DoctorOutput {
     private String description;
     private String doctorEmail;
     private String doctorCrm;
-    private List<AvailableDoctorAgenda> availableAppointments;
+    private Instant nextAvailableAppointment;
+    private Long appointmentDurationInMinutes;
 }

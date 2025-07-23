@@ -5,6 +5,7 @@ import com.fabri.srvappointment.domain.event.ScheduledAppointmentEvent;
 import com.fabri.srvappointment.domain.event.StartedPatientTriageEvent;
 import com.fabri.srvmessagebroker.domain.vo.EmailNotificationQueue;
 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class EmailNotificationFactory {
@@ -14,7 +15,7 @@ public class EmailNotificationFactory {
         var patient = patientTriage.getPatient();
         String appointmentDate = DateTimeFormatter
                 .ofPattern("dd/MM/yyyy HH:mm")
-                .format(patientTriage.getAppointmentDate());
+                .format(patientTriage.getAppointmentDate().atZone(ZoneId.systemDefault()).toLocalDateTime());
 
         return new EmailNotificationQueue(
                 patient.getPatientEmail(),
@@ -42,9 +43,9 @@ public class EmailNotificationFactory {
     public EmailNotificationQueue doctorApprovalPending(StartedPatientTriageEvent event) {
         var patientTriage = event.getPatientTriage();
         var doctor = patientTriage.getDoctor();
-        String appointmentDate = DateTimeFormatter
+        String appointmentDate =  DateTimeFormatter
                 .ofPattern("dd/MM/yyyy HH:mm")
-                .format(patientTriage.getAppointmentDate());
+                .format(patientTriage.getAppointmentDate().atZone(ZoneId.systemDefault()).toLocalDateTime());
 
         return new EmailNotificationQueue(
                 doctor.getDoctorEmail(),
