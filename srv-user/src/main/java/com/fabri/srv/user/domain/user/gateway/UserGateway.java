@@ -9,4 +9,5 @@ public interface UserGateway {
     Optional<User> findByUsername(String username);
     Optional<User> findByCpf(String cpf);
     User findByEmail(String to);
+    User findById(Long input);
 }

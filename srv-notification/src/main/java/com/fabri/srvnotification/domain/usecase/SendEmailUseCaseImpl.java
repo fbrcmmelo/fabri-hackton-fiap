@@ -17,6 +17,11 @@ public class SendEmailUseCaseImpl implements SendEmailUseCase {
 
     @Override
     public void execute(EmailInput input) {
+        if (input.to() == null || input.to().isBlank()) {
+            log.error("Email 'to' address is required");
+            throw new IllegalArgumentException("Email 'to' address cannot be null or blank");
+        }
+
         final var email = new Email(input.to(), input.cc(), input.title(), input.message());
         mailService.send(email);
     }

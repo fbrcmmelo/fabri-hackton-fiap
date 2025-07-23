@@ -48,17 +48,11 @@ public class RabbitMqConnectionConfig {
 
         // Bind patient and doctor queues to direct exchange for direct messages
         amqpAdmin.declareBinding(binding(queue(FilaConstants.STARTED_PATIENT_TRIAGE), exchange(ExchangeConstants.DIRECT)));
-        amqpAdmin.declareBinding(
-                binding(queue(FilaConstants.PATIENT_EMAIL_NOTIFICATION), exchange(ExchangeConstants.DIRECT)));
+        amqpAdmin.declareBinding(binding(queue(FilaConstants.PATIENT_EMAIL_NOTIFICATION), exchange(ExchangeConstants.DIRECT)));
         amqpAdmin.declareBinding(binding(queue(FilaConstants.DOCTOR_EMAIL_NOTIFICATION), exchange(ExchangeConstants.DIRECT)));
         amqpAdmin.declareBinding(binding(queue(FilaConstants.FINISHED_PATIENT_TRIAGE), exchange(ExchangeConstants.DIRECT)));
         amqpAdmin.declareBinding(binding(queue(FilaConstants.FINISHED_PATIENT_APPOINTMENT), exchange(ExchangeConstants.DIRECT)));
 
-        // Bind patient and doctor queues to fanout exchange for scheduled appointments
-        amqpAdmin.declareBinding(
-                binding(queue(FilaConstants.PATIENT_EMAIL_NOTIFICATION), fanoutExchange(ExchangeConstants.FAN_OUT)));
-        amqpAdmin.declareBinding(
-                binding(queue(FilaConstants.DOCTOR_EMAIL_NOTIFICATION), fanoutExchange(ExchangeConstants.FAN_OUT)));
     }
 
 }

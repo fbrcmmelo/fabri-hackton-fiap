@@ -3,6 +3,7 @@ package com.fabri.srvmessagebroker.domain;
 import com.fabri.srvmessagebroker.domain.usecases.SendQueueMessageUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -18,6 +19,7 @@ public class RabbitMqServiceAdapter implements SendQueueMessageUseCase {
     public RabbitMqServiceAdapter(RabbitTemplate service) {
         this.service = service;
         this.mapper = new ObjectMapper();
+        this.mapper.registerModule(new JavaTimeModule());
     }
 
     @Override
@@ -25,7 +27,7 @@ public class RabbitMqServiceAdapter implements SendQueueMessageUseCase {
         try {
             this.service.convertAndSend(queueName, mapper.writeValueAsString(message));
         } catch (AmqpException | JsonProcessingException e) {
-            log.error("Erro ao tentar enviar mensagem para fila: {}", queueName);
+            log.error("Erro ao tentar enviar mensagem para fila: {}: Erro: {}", queueName, e.getLocalizedMessage());
             throw new IllegalCallerException("Falha ao enviar mensagem para fila");
         }
     }

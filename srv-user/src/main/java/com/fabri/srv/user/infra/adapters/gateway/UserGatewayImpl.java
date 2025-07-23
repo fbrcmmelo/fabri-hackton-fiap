@@ -37,4 +37,10 @@ public class UserGatewayImpl implements UserGateway {
         final var byEmail = jpaRepository.findByEmail(to).orElseThrow(EntityNotFoundException::new);
         return User.fromJpaEntity(byEmail);
     }
+
+    @Override
+    public User findById(Long input) {
+        final var byId = jpaRepository.findById(input).orElseThrow(EntityNotFoundException::new);
+        return User.fromJpaEntity(byId);
+    }
 }

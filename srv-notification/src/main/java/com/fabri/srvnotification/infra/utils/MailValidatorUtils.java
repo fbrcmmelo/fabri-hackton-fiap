@@ -8,8 +8,9 @@ public class MailValidatorUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void validate(String email) throws EmailSenderException {
+    public static void validate(String email) {
         if (email == null || email.isEmpty()) {
+
             throw new EmailSenderException(email);
         }
 

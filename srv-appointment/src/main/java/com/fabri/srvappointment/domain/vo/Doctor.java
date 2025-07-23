@@ -1,15 +1,11 @@
 package com.fabri.srvappointment.domain.vo;
 
+import com.fabri.srvappointment.infra.client.user.UserOutput;
 import com.fabri.srvappointment.infra.exception.DomainException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.*;
 import java.util.Objects;
 
 @Getter
@@ -20,7 +16,8 @@ public class Doctor {
     private String doctorName;
     private String doctorCrm;
     private String doctorEmail;
-    private List<AvailableDoctorAgenda> availableDoctorAgendaList = new ArrayList<>();
+    private Instant lastDoctorAppointment;
+    private Long appointmentDurationInMinutes;
 
     public Doctor(Long doctorId, String doctorName, String doctorEmail) {
         this.doctorId = doctorId;
@@ -28,37 +25,43 @@ public class Doctor {
         this.doctorEmail = doctorEmail;
     }
 
-    public static Doctor from(DoctorOutput doctor) {
+    public static Doctor from(UserOutput doctor) {
         Objects.requireNonNull(doctor, "Failed to map DoctorOutput is null");
 
         return new Doctor(
-                doctor.getDoctorId(),
-                doctor.getDoctorName(),
+                doctor.getId(),
+                doctor.getName(),
                 doctor.getDoctorCrm(),
-                doctor.getDoctorEmail(),
-                doctor.getAvailableAppointments()
+                doctor.getEmail(),
+                doctor.getNextAvailableAppointment(),
+                doctor.getAppointmentDurationInMinutes()
         );
     }
 
     public Instant validate(LocalDate localDate, LocalTime localTime) {
-        Objects.requireNonNull(localDate, "Failed to validate doctor date");
-        Objects.requireNonNull(localTime, "Failed to validate doctor time");
+        if (patientHasntSendAndDateToAppointment(localDate, localTime)) {
+            return this.lastDoctorAppointment.plus(Duration.ofMinutes(appointmentDurationInMinutes));
+        }
 
-        var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        var appointmentDate = Instant.from(localDate.atTime(localTime));
+        var appointmentDate = localDate.atTime(localTime).atZone(ZoneId.systemDefault()).toInstant();
 
-        if (doctorHasNotThisDateAvailableOnHisAgenda(formatter, appointmentDate)) {
+        if (doctorHasNotThisDateAvailableOnHisAgenda(appointmentDate)) {
             throw new DomainException("Date of appointment does not available for given doctor");
         }
 
         return appointmentDate;
     }
 
-    private boolean doctorHasNotThisDateAvailableOnHisAgenda(DateTimeFormatter formatter, Instant dateToAppoint) {
-        return getAvailableDoctorAgendaList().stream()
-                .map(AvailableDoctorAgenda::getDate)
-                .noneMatch(doctorTime ->
-                        formatter.format(doctorTime).equalsIgnoreCase(formatter.format(dateToAppoint))
-                );
+    private static boolean patientHasntSendAndDateToAppointment(LocalDate localDate, LocalTime localTime) {
+        return localDate == null || localTime == null;
+    }
+
+    private boolean doctorHasNotThisDateAvailableOnHisAgenda(Instant dateToAppoint) {
+        if (this.lastDoctorAppointment == null) {
+            return false;
+        }
+
+        Instant nextAvailableAppointment = this.lastDoctorAppointment.plus(Duration.ofMinutes(appointmentDurationInMinutes));
+        return !dateToAppoint.isAfter(nextAvailableAppointment);
     }
 }

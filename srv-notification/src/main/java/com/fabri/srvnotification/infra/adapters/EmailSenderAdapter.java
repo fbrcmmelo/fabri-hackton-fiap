@@ -22,7 +22,9 @@ public class EmailSenderAdapter {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email.getTo().address());
             message.setFrom(fromEmail);
-            message.setCc(email.getCc().stream().map(EmailAddress::address).toArray(String[]::new));
+            if (email.getCc() != null && !email.getCc().isEmpty()) {
+                message.setCc(email.getCc().stream().map(EmailAddress::address).toArray(String[]::new));
+            }
             message.setSubject(email.getTitle().title());
             message.setText(email.getBody().body());
 

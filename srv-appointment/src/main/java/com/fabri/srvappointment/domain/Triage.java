@@ -3,15 +3,18 @@ package com.fabri.srvappointment.domain;
 import com.fabri.srvappointment.application.io.StartPatientTriageInput;
 import com.fabri.srvappointment.domain.event.FinishedPatientTriageEvent;
 import com.fabri.srvappointment.domain.event.RejectedTriageEvent;
+import com.fabri.srvappointment.domain.event.StartedPatientTriageEvent;
 import com.fabri.srvappointment.domain.vo.Doctor;
 import com.fabri.srvappointment.domain.vo.Medication;
 import com.fabri.srvappointment.domain.vo.Patient;
 import com.fabri.srvappointment.domain.vo.TriageStatus;
 import com.fabri.srvappointment.infra.exception.DomainException;
 import com.fabri.srvappointment.infra.externals.persistence.entity.TriageEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +23,7 @@ import java.util.Optional;
 
 @Getter
 @AllArgsConstructor
-public class Triage {
+public class Triage implements Serializable {
 
     private Long id;
     private Instant triageDate;
@@ -125,13 +128,15 @@ public class Triage {
         this.statusUpdatedAt = Instant.now();
     }
 
+    @JsonIgnore
     public IDomainEvent getEvent() {
         if (this.status.isApproved()) {
             return new FinishedPatientTriageEvent(this);
         } else if (this.status.isCancelled() || this.status.isError()) {
             return new RejectedTriageEvent(this);
+        } else {
+            return new StartedPatientTriageEvent(this);
         }
-        throw new DomainException("Cannot create event for check-in with status: " + this.status);
     }
 
 }

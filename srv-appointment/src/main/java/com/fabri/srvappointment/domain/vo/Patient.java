@@ -28,9 +28,9 @@ public class Patient {
     public static Patient from(UserOutput user) {
         Objects.requireNonNull(user, "Failed to map UserOutput is null");
         return new Patient(
-                Long.valueOf(user.userId()),
-                user.name(),
-                user.email()
+                Long.valueOf(user.getId()),
+                user.getName(),
+                user.getEmail()
         );
     }
 }

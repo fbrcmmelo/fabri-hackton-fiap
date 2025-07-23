@@ -1,7 +1,7 @@
 package com.fabri.srvappointment.infra.adapters.gateway;
 
 import com.fabri.srvappointment.domain.gateway.IUserGateway;
-import com.fabri.srvappointment.domain.vo.DoctorOutput;
+import com.fabri.srvappointment.infra.adapters.controller.dto.SaveNextAppointment;
 import com.fabri.srvappointment.infra.client.UserClient;
 import com.fabri.srvappointment.infra.client.user.UserOutput;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,8 @@ public class UserGatewayImpl implements IUserGateway {
     }
 
     @Override
-    public DoctorOutput getDoctor(String userId) {
-        return client.getDoctor(userId);
+    public void saveNextAvailableAppointment(SaveNextAppointment doctor) {
+        client.saveNextDoctorAppointment(doctor.getDoctorId(), doctor);
     }
+
 }

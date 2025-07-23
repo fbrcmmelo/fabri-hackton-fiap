@@ -1,6 +1,7 @@
 package com.fabri.srvappointment.infra.config;
 
 import com.fabri.srvappointment.infra.exception.DomainException;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.sql.SQLException;
 import java.time.Instant;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -23,6 +25,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return a ProblemDetail object with the specified status and exception details
      */
     private static ProblemDetail getProblemDetail(HttpStatus status, Exception ex) {
+        log.error(ex.getMessage(), ex);
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, status.getReasonPhrase());
         problemDetail.setTitle(status.name());
         problemDetail.setProperty("error", ex.getMessage());
