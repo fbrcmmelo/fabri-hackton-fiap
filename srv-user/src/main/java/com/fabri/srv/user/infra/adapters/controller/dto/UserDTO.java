@@ -1,7 +1,6 @@
 package com.fabri.srv.user.infra.adapters.controller.dto;
 
 import com.fabri.srv.user.application.dto.UserOutput;
-import com.fabri.srv.user.infra.utils.CryptoUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.Instant;
@@ -18,7 +17,7 @@ public record UserDTO(Long id,
         return new UserDTO(
                 user.id(),
                 user.name(),
-                CryptoUtil.encrypt(user.email(), CryptoUtil.generateKey()),
+                user.email(),
                 user.roles(),
                 user.nextAppointmentTime()
         );

@@ -27,6 +27,9 @@ spring:
     username: ${RABBITMQ_USERNAME:myuser}
     password: ${RABBITMQ_PASS:secret}
 
+security:
+  crypto-key: ${CRYPTO_KEY}
+
 eureka:
   instance:
     hostname: ${EUREKA_HOSTNAME:localhost}
