@@ -16,6 +16,6 @@ public class UserOutput {
     private String cpf;
     private String doctorCrm;
     private Instant nextAvailableAppointment;
-    private Long appointmentDurationInMinutes;
+    private Long appointmentDurationInMinutes = 40L;
 
 }

@@ -17,7 +17,7 @@ public class Doctor {
     private String doctorCrm;
     private String doctorEmail;
     private Instant lastDoctorAppointment;
-    private Long appointmentDurationInMinutes;
+    private Long appointmentDurationInMinutes = 30L;
 
     public Doctor(Long doctorId, String doctorName, String doctorEmail) {
         this.doctorId = doctorId;
