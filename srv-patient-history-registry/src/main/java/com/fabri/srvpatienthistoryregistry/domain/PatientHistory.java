@@ -33,9 +33,8 @@ public class PatientHistory extends AbstractAggregateRoot<PatientHistory> {
             return null;
         }
         var entityInput = new PatientHistoryInput(
-                entity.getId(),
+                entity.getAppointmentId(),
                 PatientTriage.from(entity.getTriage()),
-                entity.getCreatedAt(),
                 entity.getTriage().getAppointmentSuposedDate(),
                 entity.getFinishedAt(),
                 entity.getStatus(),

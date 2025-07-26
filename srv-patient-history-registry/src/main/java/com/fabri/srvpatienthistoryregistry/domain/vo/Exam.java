@@ -2,7 +2,7 @@ package com.fabri.srvpatienthistoryregistry.domain.vo;
 
 import com.fabri.srvpatienthistoryregistry.infra.persistence.entity.ExamEntity;
 
-public record Exam(Long id, String name, String description) {
+public record Exam(String name, String description) {
 
     public Exam {
         if (name == null || name.isBlank()) {
@@ -18,7 +18,6 @@ public record Exam(Long id, String name, String description) {
             return null;
         }
         return new Exam(
-                examEntity.getId(),
                 examEntity.getName(),
                 examEntity.getDescription()
         );

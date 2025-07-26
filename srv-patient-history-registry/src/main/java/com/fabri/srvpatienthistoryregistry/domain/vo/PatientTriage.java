@@ -1,6 +1,5 @@
 package com.fabri.srvpatienthistoryregistry.domain.vo;
 
-import com.fabri.srvpatienthistoryregistry.domain.DomainException;
 import com.fabri.srvpatienthistoryregistry.infra.persistence.entity.TriageEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +29,7 @@ public class PatientTriage {
 
     public static PatientTriage from(TriageEntity triageEntity) {
         if (triageEntity == null) {
-            throw new DomainException("Check-in entity cannot be null.");
+            return null;
         }
 
         return new PatientTriage(

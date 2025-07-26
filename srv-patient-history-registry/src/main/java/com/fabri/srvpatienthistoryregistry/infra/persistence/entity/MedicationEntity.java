@@ -1,19 +1,21 @@
 package com.fabri.srvpatienthistoryregistry.infra.persistence.entity;
 
 import com.fabri.srvpatienthistoryregistry.domain.vo.Medication;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
+@NoArgsConstructor
 public class MedicationEntity {
 
-    private final String name;
-    private final String dosage;
-    private final Long daysToTake;
-    private final Long takePerDay;
+    private String name;
+    private String dosage;
+    private Long daysToTake;
+    private Long takePerDay;
 
     public MedicationEntity(Medication medication) {
         if (medication == null) {
-            throw new IllegalArgumentException("Medication cannot be null");
+            return;
         }
 
         this.name = medication.getName();

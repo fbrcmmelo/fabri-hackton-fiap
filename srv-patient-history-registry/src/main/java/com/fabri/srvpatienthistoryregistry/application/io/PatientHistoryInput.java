@@ -15,9 +15,8 @@ public class PatientHistoryInput {
 
     private String appointmentId;
     private PatientTriage patientTriage;
-    private Instant createdAt;
     private Instant appointmentAt;
-    private Instant finishedAt;
+    private Instant appointmentFinishedAt;
     private AppointmentStatus status;
     private DoctorPrescription doctorPrescription;
 
@@ -25,7 +24,6 @@ public class PatientHistoryInput {
         return new PatientHistoryInput(
                 String.valueOf(request.getAppointmentId()),
                 request.getTriage(),
-                request.getCreatedAt(),
                 request.getAppointmentAt(),
                 request.getFinishedAt(),
                 request.getStatus(),

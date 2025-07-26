@@ -4,6 +4,7 @@ import com.fabri.srvpatienthistoryregistry.domain.PatientHistory;
 import com.fabri.srvpatienthistoryregistry.domain.vo.AppointmentStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,8 +18,10 @@ public class PatientHistoryEntity {
 
     @Id
     private String id;
+    @CreatedDate
+    private Instant historyCreatedAt;
+    private String appointmentId;
     private AppointmentStatus status;
-    private Instant createdAt;
     private Instant finishedAt;
     private DoctorPrescriptionEntity doctorPrescription;
     private TriageEntity triage;
@@ -30,9 +33,9 @@ public class PatientHistoryEntity {
         this.id = patientHistory.getId();
 
         var patientAppointment = patientHistory.getPatientAppointment();
+        this.appointmentId = patientAppointment.getAppointmentId();
         this.status = patientAppointment.getStatus();
-        this.createdAt = patientAppointment.getCreatedAt();
-        this.finishedAt = patientAppointment.getFinishedAt();
+        this.finishedAt = patientAppointment.getAppointmentFinishedAt();
         this.doctorPrescription = new DoctorPrescriptionEntity(patientAppointment.getDoctorPrescription());
         this.triage = TriageEntity.from(patientAppointment.getPatientTriage());
     }
