@@ -1,16 +1,17 @@
 package com.fabri.srvappointment.domain.vo;
 
 import com.fabri.srvappointment.infra.adapters.controller.dto.ExamRequest;
+import com.fabri.srvappointment.infra.exception.DomainException;
 import com.fabri.srvappointment.infra.externals.persistence.entity.ExamEntity;
 
 public record Exam(Long id, String name, String description) {
 
     public Exam {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or blank");
+            throw new DomainException("Exam Name cannot be null or blank");
         }
         if (description == null || description.isBlank()) {
-            throw new IllegalArgumentException("Description cannot be null or blank");
+            throw new DomainException("Exam Description cannot be null or blank");
         }
     }
 

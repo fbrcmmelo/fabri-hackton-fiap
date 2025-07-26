@@ -25,6 +25,7 @@ public class DoctorJpaEntity extends UserJpaEntity {
 
     public DoctorJpaEntity(Doctor doctor) {
         super(doctor);
+        this.setVersion(doctor.getVersion());
         this.crm = doctor.getCrm().crm();
         this.specialization = doctor.getCrm().specialization();
     }

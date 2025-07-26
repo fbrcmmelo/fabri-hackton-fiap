@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
 
+import java.security.SignatureException;
 import java.time.Instant;
 
 @RestControllerAdvice
@@ -15,13 +16,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Creates a ProblemDetail object with the given status and exception.
      *
-     * @param status the HTTP status
-     * @param ex     the exception to include in the ProblemDetail
+     * @param ex the exception to include in the ProblemDetail
      * @return a ProblemDetail object with the specified status and exception details
      */
-    private static ProblemDetail getProblemDetail(HttpStatus status, Exception ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, status.getReasonPhrase());
-        problemDetail.setTitle(status.name());
+    private static ProblemDetail getProblemDetail(Exception ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        problemDetail.setTitle(HttpStatus.UNAUTHORIZED.name());
         problemDetail.setProperty("error", ex.getMessage());
         problemDetail.setProperty("timestamp", Instant.now());
 
@@ -30,6 +30,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ExpiredJwtException.class)
     public ProblemDetail handleExpiredJwtException(ExpiredJwtException ex) {
-        return getProblemDetail(HttpStatus.UNAUTHORIZED, ex);
+        return getProblemDetail(ex);
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ProblemDetail handleExpiredJwtException(SignatureException ex) {
+        return getProblemDetail(ex);
     }
 }

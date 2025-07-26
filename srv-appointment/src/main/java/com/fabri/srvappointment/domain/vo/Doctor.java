@@ -31,7 +31,7 @@ public class Doctor {
         return new Doctor(
                 doctor.getId(),
                 doctor.getName(),
-                doctor.getDoctorCrm(),
+                doctor.getCrm(),
                 doctor.getEmail(),
                 doctor.getNextAvailableAppointment(),
                 doctor.getAppointmentDurationInMinutes()

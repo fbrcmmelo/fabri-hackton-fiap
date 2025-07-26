@@ -6,6 +6,7 @@ import com.fabri.srvappointment.infra.client.user.UserOutput;
 public interface IUserGateway {
 
     UserOutput getUser(String userId);
+    UserOutput getDoctor(String doctorId);
 
     void saveNextAvailableAppointment(SaveNextAppointment doctor);
 }

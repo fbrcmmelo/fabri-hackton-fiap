@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class JWTUtils {
@@ -40,4 +41,12 @@ public class JWTUtils {
         return getExpirationDateFromToken(token).isBefore(Instant.now());
     }
 
+    public boolean hasRole(String token, RoleEnum role) {
+        if (token == null || token.isBlank()) return false;
+
+        Claims claims = getClaimsFromToken(token);
+        String roles = Optional.ofNullable(claims.get("roles", String.class)).orElse("");
+
+        return roles.contains(role.name());
+    }
 }

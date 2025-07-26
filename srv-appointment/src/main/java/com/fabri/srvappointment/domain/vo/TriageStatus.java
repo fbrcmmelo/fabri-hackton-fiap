@@ -3,12 +3,13 @@ package com.fabri.srvappointment.domain.vo;
 public enum TriageStatus {
 
     PENDING_DOCTOR_APPROVAL,
-    APPROVED,
+    SCHEDULING_APPOINTMENT,
+    SCHEDULED_APPOINTMENT,
     CANCELLED,
     ERROR;
 
-    public boolean isApproved() {
-        return this == APPROVED;
+    public boolean SCHEDULED_APPOINTMENT() {
+        return this == SCHEDULED_APPOINTMENT;
     }
 
     public boolean isCancelled() {
@@ -17,5 +18,13 @@ public enum TriageStatus {
 
     public boolean isError() {
         return this == ERROR;
+    }
+
+    public boolean isSchedulingAppointment() {
+        return this == SCHEDULING_APPOINTMENT;
+    }
+
+    public boolean isPegingDoctorApproval() {
+        return this == PENDING_DOCTOR_APPROVAL;
     }
 }

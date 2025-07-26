@@ -27,7 +27,7 @@ public class AppointmentEntity {
 
     private Instant finishedAt;
 
-    @JoinColumn(name = "doctor_prescription_id", nullable = false)
+    @JoinColumn(name = "doctor_prescription_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private DoctorPrescriptionEntity doctorPrescription;
 
@@ -43,7 +43,7 @@ public class AppointmentEntity {
         this.status = appointment.getStatus();
         this.createdAt = appointment.getCreatedAt();
         this.finishedAt = appointment.getFinishedAt();
-        this.doctorPrescription = new DoctorPrescriptionEntity(appointment.getDoctorPrescription());
         this.triage = TriageEntity.from(appointment.getTriage());
+        this.version = appointment.getVersion();
     }
 }

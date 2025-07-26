@@ -51,10 +51,17 @@ public class UserAPI implements UserControllerOpenAPI {
     }
 
     @Override
+    @GetMapping(value = "/doctors/{doctorId}", produces = "application/json")
+    public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable String doctorId) {
+        log.info("srv-user: Received request to get doctor by id: {}", doctorId);
+        return ResponseEntity.ok(userController.getDoctorById(doctorId));
+    }
+
+    @Override
     @PutMapping(value = "/doctors/{doctorId}/next-appointment", consumes = "application/json")
     public ResponseEntity<Void> saveNextDoctorAppointment(@PathVariable Long doctorId,
                                                           @RequestBody SaveNextDoctorAppointmentRequest request) {
-       log.info("srv-user: Received request to save next appointment for doctor with id: {}", doctorId);
+        log.info("srv-user: Received request to save next appointment for doctor with id: {}", doctorId);
         userController.saveNextDoctorAppointment(doctorId, request);
         return ResponseEntity.ok().build();
     }

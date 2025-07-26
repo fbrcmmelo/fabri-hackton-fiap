@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,15 +22,21 @@ public class DoctorPrescriptionEntity {
     private Long patientId;
     private String doctorCrm;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
-            mappedBy = "doctorPrescription")
-    private List<MedicationEntity> medications;
+    @ManyToMany(fetch =  FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "tb_doctor_prescription_medication",
+            joinColumns = @JoinColumn(name = "doctor_prescription_id"),
+            inverseJoinColumns = @JoinColumn(name = "medication_id")
+    )
+    private List<MedicationEntity> medications = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
-            mappedBy = "doctorPrescription")
-    private List<ExamEntity> exams;
+    @ManyToMany(fetch =  FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "tb_doctor_prescription_exam",
+            joinColumns = @JoinColumn(name = "doctor_prescription_id"),
+            inverseJoinColumns = @JoinColumn(name = "exam_id")
+    )
+    private List<ExamEntity> exams = new ArrayList<>();
 
     public DoctorPrescriptionEntity(DoctorPrescription doctorPrescription) {
         if (doctorPrescription == null) {

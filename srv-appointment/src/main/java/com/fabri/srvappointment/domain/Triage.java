@@ -4,6 +4,7 @@ import com.fabri.srvappointment.application.io.StartPatientTriageInput;
 import com.fabri.srvappointment.domain.event.FinishedPatientTriageEvent;
 import com.fabri.srvappointment.domain.event.RejectedTriageEvent;
 import com.fabri.srvappointment.domain.event.StartedPatientTriageEvent;
+import com.fabri.srvappointment.domain.event.TriageWithAppointScheduled;
 import com.fabri.srvappointment.domain.vo.Doctor;
 import com.fabri.srvappointment.domain.vo.Medication;
 import com.fabri.srvappointment.domain.vo.Patient;
@@ -39,9 +40,10 @@ public class Triage implements Serializable {
     private Long statusApprovedByUserId;
     private Instant statusUpdatedAt;
     private String rejectionReason;
+    private Integer version;
 
     public Triage(Long id, StartPatientTriageInput triageInput, Patient patient, Doctor doctor) {
-        Objects.requireNonNull(triageInput, "Check-in input cannot be null.");
+        Objects.requireNonNull(triageInput, "Patient triage input cannot be null.");
         Objects.requireNonNull(patient, "Patient cannot be null.");
         Objects.requireNonNull(doctor, "Doctor cannot be null.");
 
@@ -64,7 +66,7 @@ public class Triage implements Serializable {
 
     public static Triage from(TriageEntity triageEntity) {
         if (triageEntity == null) {
-            throw new DomainException("Check-in entity cannot be null.");
+            throw new DomainException("Patient triage entity cannot be null.");
         }
 
         return new Triage(
@@ -82,7 +84,8 @@ public class Triage implements Serializable {
                 triageEntity.getTriageStatus(),
                 triageEntity.getApprovedBy(),
                 triageEntity.getApprovedAt(),
-                triageEntity.getRejectionReason()
+                triageEntity.getRejectionReason(),
+                triageEntity.getVersion()
         );
     }
 
@@ -101,7 +104,8 @@ public class Triage implements Serializable {
                 triageEntity.getTriageStatus(),
                 triageEntity.getApprovedBy(),
                 triageEntity.getApprovedAt(),
-                triageEntity.getRejectionReason()
+                triageEntity.getRejectionReason(),
+                triageEntity.getVersion()
         );
     }
 
@@ -114,15 +118,16 @@ public class Triage implements Serializable {
     }
 
     public void updateStatus(Long doctorId, TriageStatus triageStatus) {
-        if (this.status != TriageStatus.PENDING_DOCTOR_APPROVAL) {
-            throw new DomainException("Check-in is already approved or rejected.");
+        if (!this.status.isPegingDoctorApproval() && !this.status.isSchedulingAppointment()) {
+            throw new DomainException("Patient triage is already approved or rejected.");
         }
         if (triageStatus.equals(TriageStatus.PENDING_DOCTOR_APPROVAL)) {
-            throw new DomainException("Check-in status cannot be set to PENDING.");
+            throw new DomainException("Patient triage status cannot be set to PENDING.");
         }
         if (!Objects.equals(this.doctor.getDoctorId(), doctorId)) {
-            throw new DomainException("Doctor ID does not match the check-in's doctor.");
+            throw new DomainException("Doctor ID does not match the patient triage's doctor.");
         }
+
         this.status = triageStatus;
         this.statusApprovedByUserId = doctorId;
         this.statusUpdatedAt = Instant.now();
@@ -130,13 +135,14 @@ public class Triage implements Serializable {
 
     @JsonIgnore
     public IDomainEvent getEvent() {
-        if (this.status.isApproved()) {
+        if (this.status.isSchedulingAppointment()) {
             return new FinishedPatientTriageEvent(this);
         } else if (this.status.isCancelled() || this.status.isError()) {
             return new RejectedTriageEvent(this);
+        } else if (this.status.SCHEDULED_APPOINTMENT()) {
+            return new TriageWithAppointScheduled(this);
         } else {
             return new StartedPatientTriageEvent(this);
         }
     }
-
 }

@@ -15,11 +15,11 @@ public class SaveNextDoctorAppointmentUseCaseImpl implements SaveNextDoctorAppoi
     private final DoctorGateway doctorGateway;
 
     @Override
-    public Void execute(SaveNextAppointmentInput input) {
+    public void execute(SaveNextAppointmentInput input) {
         Doctor byId = doctorGateway.findById(input.getDoctorId());
-        DoctorAppointment confirmado = new DoctorAppointment(null, byId.getId(), input.getTriageId(), input.getAppointmentDate(), "CONFIRMADO");
+        DoctorAppointment confirmado = new DoctorAppointment(
+                null, byId.getId(), input.getTriageId(), input.getAppointmentDate(), "CONFIRMADO",byId);
 
         doctorGateway.saveNextAppointment(confirmado);
-        return null;
     }
 }

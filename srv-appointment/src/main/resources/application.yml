@@ -14,7 +14,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   sql:
     init:
       mode: always
@@ -26,6 +26,9 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:myuser}
     password: ${RABBITMQ_PASS:secret}
+
+security:
+  crypto-key: ${CRYPTO_KEY}
 
 eureka:
   instance:

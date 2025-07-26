@@ -2,10 +2,12 @@ package com.fabri.srvpatienthistoryregistry.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Doctor {
 

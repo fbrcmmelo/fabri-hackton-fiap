@@ -34,4 +34,18 @@ public record PatientTriageOutput(
                 triage.getStatus()
         );
     }
+
+    public static PatientTriageOutput fromFinishTriage(Triage triage) {
+        return new PatientTriageOutput(
+                triage.getId(),
+                triage.getTriageDate(),
+                triage.getAppointmentDate(),
+                triage.getPatient(),
+                triage.getDoctor(),
+                triage.getPatientTakenMedications(),
+                triage.getPatientAllergies(),
+                triage.getPatientComplaint(),
+                TriageStatus.SCHEDULING_APPOINTMENT
+        );
+    }
 }

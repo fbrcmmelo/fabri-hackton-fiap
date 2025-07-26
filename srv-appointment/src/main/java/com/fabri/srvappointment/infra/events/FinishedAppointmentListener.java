@@ -20,7 +20,7 @@ public class FinishedAppointmentListener {
     public void handleScheduledAppointmentEvent(final FinishedAppointmentEvent event) {
         log.info("Received finished appointment event");
 
-        log.info("Sending appointment info to EMR System");
+        log.info("Sending appointment info to PHR System");
         rabbitMqServiceAdapter.send(FilaConstants.FINISHED_PATIENT_APPOINTMENT, event.getAppointment());
 
         log.info("Sending message to Patient Notification");

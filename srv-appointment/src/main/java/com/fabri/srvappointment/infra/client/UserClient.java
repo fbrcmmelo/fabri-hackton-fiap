@@ -17,6 +17,9 @@ public interface UserClient {
     @GetMapping("/{userId}")
     UserOutput findById(@PathVariable String userId);
 
+    @GetMapping("/doctors/{doctorId}")
+    UserOutput doctorById(@PathVariable String doctorId);
+
     @PutMapping("/doctors/{doctorId}/next-appointment")
     void saveNextDoctorAppointment(@PathVariable Long doctorId, @RequestBody SaveNextAppointment doctor);
 }

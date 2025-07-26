@@ -14,7 +14,7 @@ public class UserOutput {
     private String name;
     private String email;
     private String cpf;
-    private String doctorCrm;
+    private String crm;
     private Instant nextAvailableAppointment;
     private Long appointmentDurationInMinutes = 40L;
 

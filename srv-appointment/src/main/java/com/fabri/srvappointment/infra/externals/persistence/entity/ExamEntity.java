@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -17,9 +19,8 @@ public class ExamEntity {
     private String name;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_prescription_id", nullable = false)
-    private DoctorPrescriptionEntity doctorPrescription;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "exams")
+    private Set<DoctorPrescriptionEntity> doctorPrescription;
 
     public ExamEntity(Exam exam) {
         if (exam == null) {

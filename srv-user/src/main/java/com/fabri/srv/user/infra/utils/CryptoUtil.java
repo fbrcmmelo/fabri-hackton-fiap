@@ -4,18 +4,17 @@ import com.fabri.srv.user.infra.exceptions.CryptoUtilException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
 @Slf4j
 public class CryptoUtil {
 
-    private static final String ALGORITHM = "HmacSHA256";
+    private static final String ALGORITHM = "AES";
 
     public static String encrypt(String value, SecretKey key) {
         try {
-
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] encrypted = cipher.doFinal(value.getBytes());
@@ -39,11 +38,9 @@ public class CryptoUtil {
         }
     }
 
-    public static SecretKey generateKey() {
+    public static SecretKey generateKey(String key) {
         try {
-            KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
-            keyGen.init(128);
-            return keyGen.generateKey();
+            return new SecretKeySpec(key.getBytes(), ALGORITHM);
         } catch (Exception e) {
             log.error("Failed to generate encryption key", e);
             throw new CryptoUtilException("Failed to generate encryption key");

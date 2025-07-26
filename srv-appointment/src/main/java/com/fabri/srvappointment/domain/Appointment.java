@@ -4,6 +4,7 @@ import com.fabri.srvappointment.domain.vo.AppointmentStatus;
 import com.fabri.srvappointment.domain.vo.DoctorPrescription;
 import com.fabri.srvappointment.domain.vo.Exam;
 import com.fabri.srvappointment.domain.vo.Medication;
+import com.fabri.srvappointment.infra.client.user.UserOutput;
 import com.fabri.srvappointment.infra.externals.persistence.entity.AppointmentEntity;
 import lombok.Getter;
 
@@ -21,6 +22,7 @@ public class Appointment {
     private Instant finishedAt;
     private AppointmentStatus status;
     private DoctorPrescription doctorPrescription;
+    private Long version;
 
     public Appointment(Long appointmentId, Triage triage) {
         Objects.requireNonNull(triage, "Triage cannot be null to create an Appointment");
@@ -42,15 +44,16 @@ public class Appointment {
         appointment.createdAt = entity.getCreatedAt();
         appointment.finishedAt = entity.getFinishedAt();
         appointment.doctorPrescription = DoctorPrescription.from(entity.getDoctorPrescription());
+        appointment.version = entity.getVersion();
 
         return appointment;
     }
 
-    public void createDoctorPrescription(String notes, List<Medication> medications, List<Exam> exams) {
+    public void createDoctorPrescription(String notes, List<Medication> medications, List<Exam> exams, UserOutput doctor) {
         this.doctorPrescription = new DoctorPrescription(
                 null,
-                this.triage.getId(),
-                this.getTriage().getDoctor().getDoctorCrm(),
+                triage.getPatient().getPatientId(),
+                doctor.getCrm(),
                 medications,
                 exams,
                 notes
@@ -61,5 +64,4 @@ public class Appointment {
         this.status = AppointmentStatus.FINISHED;
         this.finishedAt = Instant.now();
     }
-
 }
