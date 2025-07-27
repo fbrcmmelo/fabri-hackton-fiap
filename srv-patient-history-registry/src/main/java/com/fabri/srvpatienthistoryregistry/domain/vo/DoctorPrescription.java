@@ -4,7 +4,7 @@ import com.fabri.srvpatienthistoryregistry.infra.persistence.entity.DoctorPrescr
 
 import java.util.List;
 
-public record DoctorPrescription(String prescriptionId, String toPatientId, String doctorCrm,
+public record DoctorPrescription(String toPatientId, String doctorCrm,
                                  List<Medication> medications,
                                  List<Exam> exams, String notes) {
     public static DoctorPrescription from(DoctorPrescriptionEntity doctorPrescription) {
@@ -13,7 +13,6 @@ public record DoctorPrescription(String prescriptionId, String toPatientId, Stri
         }
 
         return new DoctorPrescription(
-                doctorPrescription.getId(),
                 doctorPrescription.getPatientId(),
                 doctorPrescription.getDoctorCrm(),
                 doctorPrescription.getMedications().stream().map(Medication::fromEntity).toList(),
