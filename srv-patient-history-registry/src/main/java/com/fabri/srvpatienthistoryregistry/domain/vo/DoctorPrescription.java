@@ -7,15 +7,6 @@ import java.util.List;
 public record DoctorPrescription(String prescriptionId, String toPatientId, String doctorCrm,
                                  List<Medication> medications,
                                  List<Exam> exams, String notes) {
-
-    public DoctorPrescription {
-        if (toPatientId == null || doctorCrm == null || medications == null || medications.isEmpty() ||
-                doctorCrm.isEmpty()) {
-            throw new IllegalArgumentException("Invalid prescription data");
-        }
-
-    }
-
     public static DoctorPrescription from(DoctorPrescriptionEntity doctorPrescription) {
         if (doctorPrescription == null) {
             return null;

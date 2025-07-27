@@ -1,7 +1,6 @@
 package com.fabri.srvappointment.infra.events;
 
 import com.fabri.srvappointment.domain.event.FinishedPatientTriageEvent;
-import com.fabri.srvappointment.domain.gateway.IUserGateway;
 import com.fabri.srvmessagebroker.domain.RabbitMqServiceAdapter;
 import com.fabri.srvmessagebroker.infra.consts.FilaConstants;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 public class FinishedTriageListener {
 
     private final RabbitMqServiceAdapter rabbitMqServiceAdapter;
-    private final IUserGateway userGateway;
 
     @EventListener
     public void handleScheduledAppointmentEvent(final FinishedPatientTriageEvent event) {

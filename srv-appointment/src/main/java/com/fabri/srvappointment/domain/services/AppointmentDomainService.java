@@ -2,6 +2,7 @@ package com.fabri.srvappointment.domain.services;
 
 import com.fabri.srvappointment.domain.Appointment;
 import com.fabri.srvappointment.domain.IDomainEventPublisher;
+import com.fabri.srvappointment.domain.event.FinishedAppointmentEvent;
 import com.fabri.srvappointment.domain.event.ScheduledAppointmentEvent;
 import com.fabri.srvappointment.domain.gateway.IAppointmentGateway;
 import com.fabri.srvappointment.domain.gateway.IUserGateway;
@@ -33,7 +34,7 @@ public class AppointmentDomainService {
 
     public Appointment finishAppointment(Appointment appointmentOnExecution) {
         final var finishedAppointment = appointmentGateway.save(appointmentOnExecution);
-        domainEventPublisher.publish(new ScheduledAppointmentEvent(finishedAppointment));
+        domainEventPublisher.publish(new FinishedAppointmentEvent(finishedAppointment));
         return finishedAppointment;
     }
 

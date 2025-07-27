@@ -1,16 +1,18 @@
 package com.fabri.srvpatienthistoryregistry.domain.vo;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
 
 @Getter
+@NoArgsConstructor
 public class Patient {
 
-    private final String patientId;
-    private final String patientName;
-    private final String patientEmail;
+    private String patientId;
+    private String patientName;
+    private String patientEmail;
 
     @Setter
     private Integer patientAge;

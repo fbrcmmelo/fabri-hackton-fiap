@@ -3,8 +3,10 @@ package com.fabri.srvpatienthistoryregistry.domain.vo;
 import com.fabri.srvpatienthistoryregistry.infra.persistence.entity.MedicationEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Medication {
 
