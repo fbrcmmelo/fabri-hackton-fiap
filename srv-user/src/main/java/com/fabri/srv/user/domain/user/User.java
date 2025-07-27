@@ -83,7 +83,8 @@ public class User {
 
     public void checkCPF(String cpf) {
         CPF cpfValid = new CPF(cpf);
-        if (!this.cpf.getCpfCnpj().equalsIgnoreCase(cpfValid.getCpfCnpj())) {
+        if (!this.cpf.getCpfCnpjSemFormatacao()
+                .equalsIgnoreCase(cpfValid.getCpfCnpjSemFormatacao())) {
             throw new DomainException("Invalid CPF");
         }
     }
