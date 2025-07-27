@@ -8,7 +8,6 @@ import com.fabri.srv.user.domain.user.vo.RoleEnum;
 import com.fabri.srv.user.infra.persistence.user.RoleJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +37,7 @@ public class AdminConfig {
                 // If the user already exists, we do nothing
                 var admin = RegisterUserInput.builder()
                         .username("admin")
-                        .password(BCrypt.hashpw(admin123, BCrypt.gensalt()))
+                        .password(admin123)
                         .email("fabri@hackton.com")
                         .address("Rua Admin")
                         .number(123)

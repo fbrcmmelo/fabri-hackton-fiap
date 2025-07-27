@@ -47,6 +47,6 @@ public class JWTUtils {
         Claims claims = getClaimsFromToken(token);
         String roles = Optional.ofNullable(claims.get("roles", String.class)).orElse("");
 
-        return roles.contains(role.name());
+        return roles.equalsIgnoreCase(role.name());
     }
 }
