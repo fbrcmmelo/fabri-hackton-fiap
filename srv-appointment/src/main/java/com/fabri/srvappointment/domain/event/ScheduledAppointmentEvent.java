@@ -7,6 +7,7 @@ import com.fabri.srvappointment.domain.vo.Doctor;
 import com.fabri.srvappointment.domain.vo.Patient;
 import lombok.Getter;
 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @Getter
@@ -31,7 +32,9 @@ public class ScheduledAppointmentEvent implements IDomainEvent {
         this.doctorName = doctor.getDoctorName();
         this.doctorEmail = doctor.getDoctorEmail();
 
-        this.appointmentAt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(triage.getAppointmentDate());
+        this.appointmentAt = DateTimeFormatter
+                .ofPattern("dd/MM/yyyy HH:mm")
+                .format(triage.getAppointmentDate().atZone(ZoneId.systemDefault()).toLocalDateTime());
     }
 
     @Override

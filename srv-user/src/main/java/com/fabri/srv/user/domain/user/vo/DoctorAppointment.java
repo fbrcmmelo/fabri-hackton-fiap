@@ -1,5 +1,6 @@
 package com.fabri.srv.user.domain.user.vo;
 
+import com.fabri.srv.user.domain.user.Doctor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,6 @@ public class DoctorAppointment {
     private Long triageId;
     private Instant appointmentTime;
     private String status;
+    private Doctor doctor;
 
 }

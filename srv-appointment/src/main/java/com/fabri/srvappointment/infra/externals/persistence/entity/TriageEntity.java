@@ -70,6 +70,8 @@ public class TriageEntity {
         triageEntity.setPatientTakenMedications(triage.getPatientTakenMedications().stream().map(Medication::getName)
                 .collect(Collectors.joining(",")));
 
+        triageEntity.setVersion(triage.getVersion());
+
         return triageEntity;
     }
 

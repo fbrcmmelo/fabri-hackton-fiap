@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,9 +22,8 @@ public class MedicationEntity {
     private Long daysToTake;
     private Long takePerDay;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_prescription_id", updatable = false,nullable = false)
-    private DoctorPrescriptionEntity doctorPrescription;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "medications")
+    private Set<DoctorPrescriptionEntity> doctorPrescription = new HashSet<>();
 
     public MedicationEntity(Medication medication) {
         if (medication == null) {

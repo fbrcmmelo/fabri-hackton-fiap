@@ -21,11 +21,10 @@ public class EmailNotificationFactory {
                 patient.getPatientEmail(),
                 "Check-In Pending Doctor Approval",
                 String.format("""
-                        Dear, %s, Hold on tight and get ready for your patientHistory!
+                        Dear, %s, Hold on tight and get ready for your medical appointment for %s!
                         
                         We are excited to inform you that your check-in is pending approval from your doctor.
-                        The patientHistory is scheduled for %s.
-                        
+                    
                         If you have any questions or need to reschedule, please feel free to contact us at least
                         24 hours in advance.
                         
@@ -56,7 +55,7 @@ public class EmailNotificationFactory {
                         It's time to be a hero in another patient's life!
                         
                         You have a pending approval for a patient check-in.
-                        The patientHistory is scheduled for %s.
+                        The appointment is scheduled for %s.
                         
                         Please review the details and take the necessary action.
                         
@@ -73,8 +72,8 @@ public class EmailNotificationFactory {
                 String.format("""
                         Dear, %s,
                         
-                        We are pleased to inform you that your patientHistory has been successfully scheduled.
-                        The patientHistory is set for %s.
+                        We are pleased to inform you that your appointment has been successfully scheduled.
+                        The appointment is set for %s.
                         
                         If you have any questions or need to reschedule, please feel free to contact us at least
                         24 hours in advance.

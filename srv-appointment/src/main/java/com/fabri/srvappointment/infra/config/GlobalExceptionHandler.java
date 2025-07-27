@@ -1,6 +1,8 @@
 package com.fabri.srvappointment.infra.config;
 
 import com.fabri.srvappointment.infra.exception.DomainException;
+import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
@@ -15,7 +17,10 @@ import java.time.Instant;
 
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private final TokenHolder tokenHolder;
 
     /**
      * Creates a ProblemDetail object with the given status and exception.
@@ -51,9 +56,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({SQLException.class, JDBCException.class, HibernateException.class})
-    public ProblemDetail handleJDBCException(SQLException ex) {
+    public ProblemDetail handleJDBCException(Exception ex) {
         ProblemDetail problemDetail = getProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex);
         problemDetail.setProperty("error", "Database error occurred");
         return problemDetail;
     }
+
+    @ExceptionHandler(FeignException.class)
+    public ProblemDetail handleFeignException(FeignException ex) {
+        ProblemDetail problemDetail = getProblemDetail(HttpStatus.valueOf(ex.status()), ex);
+        problemDetail.setProperty("error", "Feign client error: " + ex.getMessage());
+        tokenHolder.clear();
+        return problemDetail;
+    }
+
 }

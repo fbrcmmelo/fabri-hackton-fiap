@@ -27,6 +27,17 @@ public class UserGatewayImpl implements IUserGateway {
     }
 
     @Override
+    public UserOutput getDoctor(String doctorId) {
+        UserOutput byId = client.doctorById(doctorId);
+        String emailDecrypted = CryptoUtil.decrypt(byId.getEmail(), CryptoUtil.generateKey(encryptionKey));
+        byId.setEmail(emailDecrypted);
+        String crmDecrypted = CryptoUtil.decrypt(byId.getCrm(), CryptoUtil.generateKey(encryptionKey));
+        byId.setCrm(crmDecrypted);
+
+        return byId;
+    }
+
+    @Override
     public void saveNextAvailableAppointment(SaveNextAppointment doctor) {
         client.saveNextDoctorAppointment(doctor.getDoctorId(), doctor);
     }

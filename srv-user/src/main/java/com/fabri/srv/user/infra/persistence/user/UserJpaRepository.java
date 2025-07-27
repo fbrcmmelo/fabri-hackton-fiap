@@ -17,6 +17,6 @@ public interface UserJpaRepository extends JpaRepository<UserJpaEntity, Long> {
 
     Optional<UserJpaEntity> findByEmail(String to);
 
-    @Query("SELECT u FROM UserJpaEntity u WHERE u.id = ?1 AND 'u.descriminatorValue' = 'DOCTOR'")
+    @Query("SELECT u FROM DoctorJpaEntity u WHERE u.id = ?1 AND (u.crm is not null and u.crm <> '')")
     Optional<DoctorJpaEntity> doctorById(Long doctorId);
 }

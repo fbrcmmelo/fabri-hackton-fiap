@@ -26,11 +26,6 @@ public class AppointmentAPI implements AppointmentOpenAPI {
     @Override
     @PostMapping
     public ResponseEntity<FinishedAppointmentDTO> finishAppointment(@RequestBody FinishAppointmentRequest request) {
-        try {
-            return ResponseEntity.ok(controller.finishAppointment(request));
-        } catch (Exception e) {
-            log.error("srv-appointment: Fail to finish appointment : {} ", e.getMessage());
-            return ResponseEntity.internalServerError().build();
-        }
+        return ResponseEntity.ok(controller.finishAppointment(request));
     }
 }

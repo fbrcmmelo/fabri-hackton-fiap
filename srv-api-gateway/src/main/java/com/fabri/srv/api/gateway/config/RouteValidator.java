@@ -22,7 +22,8 @@ public class RouteValidator {
     protected static final Set<String> DOCTOR_ENDPOINTS = Set.of(
             "/triages",
             "/appointments",
-            "/patients"
+            "/patients",
+            "/next-appointment"
     );
 
     protected static final Set<String> ADMIN_ENDPOINTS = Set.of(

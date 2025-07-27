@@ -48,6 +48,13 @@ public interface UserControllerOpenAPI {
             })
     ResponseEntity<UserDTO> getUserById(String userId);
 
+    @Operation(summary = "Get doctor by ID", description = "Retrieves a user by their ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User found"),
+                    @ApiResponse(responseCode = "404", description = "Not found - user does not exist")
+            })
+    ResponseEntity<DoctorDTO> getDoctorById(String userId);
+
     @Operation(summary = "Save next doctor appointment", description = "Saves the next appointment for a doctor.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Next appointment saved successfully"),

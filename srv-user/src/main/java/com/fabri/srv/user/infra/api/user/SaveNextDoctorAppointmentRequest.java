@@ -10,6 +10,6 @@ import java.time.Instant;
 public class SaveNextDoctorAppointmentRequest {
 
     private Long triageId;
-    private Instant nextAvailableAppointment;
+    private Instant appointmentTime;
 
 }

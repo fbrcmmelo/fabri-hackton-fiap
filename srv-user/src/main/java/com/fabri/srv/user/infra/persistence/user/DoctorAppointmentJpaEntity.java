@@ -20,7 +20,7 @@ public class DoctorAppointmentJpaEntity {
     @Column(nullable = false)
     private Long triageId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Instant appointmentTime;
 
     private String status;
@@ -35,9 +35,7 @@ public class DoctorAppointmentJpaEntity {
         entity.setTriageId(appointment.getTriageId());
         entity.setAppointmentTime(appointment.getAppointmentTime());
         entity.setStatus(appointment.getStatus());
-        DoctorJpaEntity doctorJpaEntity = new DoctorJpaEntity();
-        doctorJpaEntity.setId(appointment.getDoctorId());
-        entity.setDoctor(doctorJpaEntity);
+        entity.setDoctor(new DoctorJpaEntity(appointment.getDoctor()));
 
         return entity;
 
