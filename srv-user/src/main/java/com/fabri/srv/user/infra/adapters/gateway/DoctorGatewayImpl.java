@@ -7,6 +7,8 @@ import com.fabri.srv.user.infra.persistence.user.DoctorAppointmentJpaEntity;
 import com.fabri.srv.user.infra.persistence.user.DoctorAppointmentJpaRepository;
 import com.fabri.srv.user.infra.persistence.user.DoctorJpaEntity;
 import com.fabri.srv.user.infra.persistence.user.UserJpaRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -33,13 +35,18 @@ public class DoctorGatewayImpl implements DoctorGateway {
     public Doctor findById(Long doctorId) {
         return jpaRepository.doctorById(doctorId)
                 .map(Doctor::fromJpaEntity)
-                .orElseThrow(() -> new IllegalArgumentException("Doctor not found with id: " + doctorId));
+                .orElseThrow(() -> new EntityNotFoundException("Doctor not found with id: " + doctorId));
     }
 
     @Override
+    @Transactional
     public void saveNextAppointment(DoctorAppointment confirmado) {
         DoctorAppointmentJpaEntity from = DoctorAppointmentJpaEntity.from(confirmado);
         doctorAppointmentJpaRepository.save(from);
+
+        DoctorJpaEntity doctor = from.getDoctor();
+        doctor.setNextAppointment(from.getAppointmentTime());
+        jpaRepository.save(doctor);
     }
 
 }

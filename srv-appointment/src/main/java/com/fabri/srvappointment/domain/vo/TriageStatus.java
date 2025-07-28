@@ -8,7 +8,7 @@ public enum TriageStatus {
     CANCELLED,
     ERROR;
 
-    public boolean SCHEDULED_APPOINTMENT() {
+    public boolean isScheduledAppointment() {
         return this == SCHEDULED_APPOINTMENT;
     }
 
@@ -27,4 +27,5 @@ public enum TriageStatus {
     public boolean isPegingDoctorApproval() {
         return this == PENDING_DOCTOR_APPROVAL;
     }
+
 }

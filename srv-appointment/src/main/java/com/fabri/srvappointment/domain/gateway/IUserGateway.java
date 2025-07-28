@@ -8,5 +8,5 @@ public interface IUserGateway {
     UserOutput getUser(String userId);
     UserOutput getDoctor(String doctorId);
 
-    void saveNextAvailableAppointment(SaveNextAppointment doctor);
+    boolean saveNextAvailableAppointment(SaveNextAppointment doctor);
 }

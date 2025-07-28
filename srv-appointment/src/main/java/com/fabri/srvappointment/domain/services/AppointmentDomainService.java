@@ -28,6 +28,7 @@ public class AppointmentDomainService {
                 registeredAppointment.getTriage().getId(),
                 registeredAppointment.getTriage().getAppointmentDate())
         );
+
         domainEventPublisher.publish(new ScheduledAppointmentEvent(registeredAppointment));
         return registeredAppointment;
     }

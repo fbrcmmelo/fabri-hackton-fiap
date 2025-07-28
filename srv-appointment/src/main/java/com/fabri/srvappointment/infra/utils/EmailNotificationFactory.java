@@ -93,8 +93,8 @@ public class EmailNotificationFactory {
                 String.format("""
                         Dear, %s,
                         
-                        This is a friendly reminder for your upcoming patientHistory with patient %s.
-                        The patientHistory is scheduled for %s.
+                        This is a friendly reminder for your upcoming appointment with patient %s.
+                        The appointment is scheduled for %s.
                         
                         Please ensure you are prepared and available at the scheduled time.
                         
@@ -107,8 +107,8 @@ public class EmailNotificationFactory {
     }
 
     public EmailNotificationQueue finishedPatientAppointment(FinishedAppointmentEvent event) {
-        var patientHistory = event.getAppointment();
-        var triage = patientHistory.getTriage();
+        var appointment = event.getAppointment();
+        var triage = appointment.getTriage();
         var patient = triage.getPatient();
         var doctor = triage.getDoctor();
 
@@ -118,7 +118,7 @@ public class EmailNotificationFactory {
                 String.format("""
                                 Dear, %s,
                                 
-                                We are pleased to inform you that your patientHistory with Dr. %s has been successfully completed.
+                                We are pleased to inform you that your appointment with Dr. %s has been successfully completed.
                                 We hope you found the consultation helpful and informative.
                                 
                                 Let's see what the Doctor prescribed for you:
@@ -143,7 +143,7 @@ public class EmailNotificationFactory {
                                 """,
                         patient.getPatientName(),
                         doctor.getDoctorName(),
-                        patientHistory.getDoctorPrescription().toText(),
+                        appointment.getDoctorPrescription().toText(),
                         "Pharmacies: ",
                         "Laboratories: ")
         );

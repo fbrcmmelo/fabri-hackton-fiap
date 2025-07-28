@@ -21,7 +21,7 @@ public class StartPatientTriageUseCaseImpl implements StartPatientTriageUseCase 
     @Override
     public PatientTriageOutput execute(StartPatientTriageInput input) {
         final var patient = Patient.from(userGateway.getUser(input.patientId()));
-        final var doctor = Doctor.from(userGateway.getUser(input.doctorId()));
+        final var doctor = Doctor.from(userGateway.getDoctor(input.doctorId()));
 
         Triage registeredTriage = domainService.saveTriage(new Triage(null, input, patient, doctor));
 

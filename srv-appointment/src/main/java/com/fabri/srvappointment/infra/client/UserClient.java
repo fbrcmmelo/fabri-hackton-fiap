@@ -21,5 +21,5 @@ public interface UserClient {
     UserOutput doctorById(@PathVariable String doctorId);
 
     @PutMapping("/doctors/{doctorId}/next-appointment")
-    void saveNextDoctorAppointment(@PathVariable Long doctorId, @RequestBody SaveNextAppointment doctor);
+    boolean saveNextDoctorAppointment(@PathVariable Long doctorId, @RequestBody SaveNextAppointment doctor);
 }

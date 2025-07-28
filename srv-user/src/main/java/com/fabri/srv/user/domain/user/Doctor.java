@@ -44,6 +44,7 @@ public class Doctor extends User {
         doctor.setAdress(new Adress(entity.getNumber(), entity.getAddress(), entity.getCity(), entity.getState()));
         doctor.setRoles(entity.getRoles().stream().map(Role::fromJpaEntity).collect(Collectors.toSet()));
         doctor.setVersion(entity.getVersion());
+        doctor.setNextAppointment(entity.getNextAppointment());
 
         return doctor;
     }
@@ -52,9 +53,5 @@ public class Doctor extends User {
     public Doctor withRoles(Set<Role> roles) {
         super.withRoles(roles);
         return this;
-    }
-
-    public void setNextAppointment(Instant appointmentDate) {
-        this.nextAppointment = appointmentDate;
     }
 }
