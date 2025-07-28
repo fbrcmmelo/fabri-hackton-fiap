@@ -33,14 +33,20 @@ public class Doctor {
                 doctor.getName(),
                 doctor.getCrm(),
                 doctor.getEmail(),
-                doctor.getNextAvailableAppointment(),
+                doctor.getNextAppointmentTime(),
                 doctor.getAppointmentDurationInMinutes()
         );
     }
 
     public Instant validate(LocalDate localDate, LocalTime localTime) {
         if (patientHasntSendAndDateToAppointment(localDate, localTime)) {
-            return this.lastDoctorAppointment.plus(Duration.ofMinutes(appointmentDurationInMinutes));
+            if (this.lastDoctorAppointment == null) {
+                // Doctor with avaliable next time
+                this.lastDoctorAppointment = Instant.now().plus(Duration.ofMinutes(10));
+            } else {
+                this.lastDoctorAppointment.plus(Duration.ofMinutes(appointmentDurationInMinutes));
+            }
+            return lastDoctorAppointment;
         }
 
         var appointmentDate = localDate.atTime(localTime).atZone(ZoneId.systemDefault()).toInstant();

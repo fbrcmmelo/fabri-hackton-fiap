@@ -59,11 +59,11 @@ public class UserAPI implements UserControllerOpenAPI {
 
     @Override
     @PutMapping(value = "/doctors/{doctorId}/next-appointment", consumes = "application/json")
-    public ResponseEntity<Void> saveNextDoctorAppointment(@PathVariable Long doctorId,
+    public ResponseEntity<Boolean> saveNextDoctorAppointment(@PathVariable Long doctorId,
                                                           @RequestBody SaveNextDoctorAppointmentRequest request) {
         log.info("srv-user: Received request to save next appointment for doctor with id: {}", doctorId);
         userController.saveNextDoctorAppointment(doctorId, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(true);
     }
 
 }

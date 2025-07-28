@@ -61,5 +61,5 @@ public interface UserControllerOpenAPI {
                     @ApiResponse(responseCode = "400", description = "Bad request - invalid input"),
                     @ApiResponse(responseCode = "404", description = "Not found - doctor does not exist")
             })
-    ResponseEntity<Void> saveNextDoctorAppointment(Long doctorId, SaveNextDoctorAppointmentRequest request);
+    ResponseEntity<Boolean> saveNextDoctorAppointment(Long doctorId, SaveNextDoctorAppointmentRequest request);
 }

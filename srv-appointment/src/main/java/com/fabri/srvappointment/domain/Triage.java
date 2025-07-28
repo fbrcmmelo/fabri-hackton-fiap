@@ -14,6 +14,7 @@ import com.fabri.srvappointment.infra.externals.persistence.entity.TriageEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -39,6 +40,7 @@ public class Triage implements Serializable {
     private TriageStatus status;
     private Long statusApprovedByUserId;
     private Instant statusUpdatedAt;
+    @Setter
     private String rejectionReason;
     private Integer version;
 
@@ -118,11 +120,11 @@ public class Triage implements Serializable {
     }
 
     public void updateStatus(Long doctorId, TriageStatus triageStatus) {
-        if (!this.status.isPegingDoctorApproval() && !this.status.isSchedulingAppointment()) {
-            throw new DomainException("Patient triage is already approved or rejected.");
+        if (this.status == triageStatus) {
+            throw new DomainException("Triage is already on status " + this.status);
         }
-        if (triageStatus.equals(TriageStatus.PENDING_DOCTOR_APPROVAL)) {
-            throw new DomainException("Patient triage status cannot be set to PENDING.");
+        if (List.of(TriageStatus.SCHEDULED_APPOINTMENT, TriageStatus.ERROR, TriageStatus.CANCELLED).contains(this.status)) {
+            throw new DomainException("Cannot change, Triage is already finished or scheduled appointment.");
         }
         if (!Objects.equals(this.doctor.getDoctorId(), doctorId)) {
             throw new DomainException("Doctor ID does not match the patient triage's doctor.");
@@ -139,7 +141,7 @@ public class Triage implements Serializable {
             return new FinishedPatientTriageEvent(this);
         } else if (this.status.isCancelled() || this.status.isError()) {
             return new RejectedTriageEvent(this);
-        } else if (this.status.SCHEDULED_APPOINTMENT()) {
+        } else if (this.status.isScheduledAppointment()) {
             return new TriageWithAppointScheduled(this);
         } else {
             return new StartedPatientTriageEvent(this);

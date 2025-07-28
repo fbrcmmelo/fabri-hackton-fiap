@@ -2,6 +2,7 @@ package com.fabri.srv.user.domain.user.usecases;
 
 import com.fabri.srv.user.application.FindDoctorByIdUseCase;
 import com.fabri.srv.user.application.dto.DoctorOutput;
+import com.fabri.srv.user.domain.user.Doctor;
 import com.fabri.srv.user.domain.user.gateway.DoctorGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,8 @@ public class FindDoctorByIdUseCaseImpl implements FindDoctorByIdUseCase {
 
     @Override
     public DoctorOutput execute(String input) {
-        return DoctorOutput.from(doctorGateway.findById(Long.valueOf(input)));
+        Doctor byId = doctorGateway.findById(Long.valueOf(input));
+        byId.validateIfIAmDoctor();
+        return DoctorOutput.from(byId);
     }
 }

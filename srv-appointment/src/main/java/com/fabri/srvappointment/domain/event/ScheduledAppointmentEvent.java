@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 public class ScheduledAppointmentEvent implements IDomainEvent {
 
     private final Long appointmentId;
+    private final Long triageId;
     private final String patientName;
     private final String patientEmail;
     private final String doctorName;
@@ -22,6 +23,7 @@ public class ScheduledAppointmentEvent implements IDomainEvent {
 
     public ScheduledAppointmentEvent(Appointment appointment) {
         Triage triage = appointment.getTriage();
+        this.triageId = triage.getId();
         this.appointmentId = appointment.getAppointmentId();
 
         Patient patient = triage.getPatient();

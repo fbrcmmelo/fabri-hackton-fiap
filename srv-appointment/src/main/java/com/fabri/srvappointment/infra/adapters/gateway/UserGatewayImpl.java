@@ -38,8 +38,8 @@ public class UserGatewayImpl implements IUserGateway {
     }
 
     @Override
-    public void saveNextAvailableAppointment(SaveNextAppointment doctor) {
-        client.saveNextDoctorAppointment(doctor.getDoctorId(), doctor);
+    public boolean saveNextAvailableAppointment(SaveNextAppointment doctor) {
+        return client.saveNextDoctorAppointment(doctor.getDoctorId(), doctor);
     }
 
 }

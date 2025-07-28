@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class DoctorJpaEntity extends UserJpaEntity {
     @Column(unique = true)
     private String crm;
     private String specialization;
+    private Instant nextAppointment;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     private List<DoctorAppointmentJpaEntity> appointments = new ArrayList<>();
